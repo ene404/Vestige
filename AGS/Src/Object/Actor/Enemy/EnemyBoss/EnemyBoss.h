@@ -135,6 +135,13 @@ public:
 	// 移動速度
 	static constexpr float MOVE_SPEED = 5.0f;
 	
+	// デバック用
+	static constexpr float DEBUG_STATE_POS_Y = 100.0f;
+	static constexpr float DEBUG_ATTACK_POS_Y = 200.0f;
+	static constexpr int DEBUG_POS_X = 720;
+	static constexpr int DEBUG_DIST_POS_Y = 32;
+	static constexpr int DEBUG_DEADTIME_POSY = 64;
+	static constexpr int DEBUG_ATTACKBUFF_POSY = 96;
 
 	// 状態
 	enum class STATE
@@ -182,18 +189,16 @@ public:
 	void AddCollider(std::shared_ptr<Collider> collider);
 	void ClearCollider(void);
 
-	//-------------------------------------
-	void SetPlayerDummy(std::shared_ptr<PlayerDummy> playerDummy);
-
 	// 霧との衝突判定用情報を取得する
 	void SetMist(std::shared_ptr<Mist> mist);
 
-	// 衝突用カプセルの取得-----------------------
+	// 衝突用カプセルの取得
 	const std::shared_ptr<Capsule> GetCapsule(void) const;
 
+	// HPの取得
 	int GetHp(void) const;
 
-	// ----------------------------------------
+	// 現在のステート状態を取得
 	STATE GetCurrentStateId() const;
 
 	// メインステート変更インターフェース
@@ -209,9 +214,6 @@ public:
 	float GetPlayerDistanceXZ() const;
 	VECTOR GetToPlayer();
 
-
-	// -----------------------------
-	// これらは引数内に自身の座標を入れれば必要ないし、安全性の観点から考えておかしい
 	void SetPosition(VECTOR pos);
 	Transform& GetTransformMutable();
 
@@ -219,9 +221,10 @@ public:
 	// ボスをスタン時間を設定する
 	void SetStunned(float duration);
 
+	// スタンしているかどうか
 	bool IsStunned(void) const;
 
-	//--------------------
+	// スタン時間の取得
 	float  GetStunTimer(void) const;
 
 	// ボスの攻撃力アップ状態
@@ -257,10 +260,13 @@ public:
 	// HPバーの描画
 	void DrawHpBar(void);
 
+	// 引数の方向を向かせる
 	void LookAt(VECTOR pos);
 
+	// ターゲットの方に歩く
 	void MoveToward(const VECTOR& target);
 
+	// 攻撃範囲描画用
 	void DrawCircleOnGround(VECTOR center, float radius, int segment, int color);
 
 	// プレイヤーがボスの正面にいるかを判定する
@@ -284,7 +290,6 @@ private:
 	// プレイヤー
 	Player& player_;
 
-	std::shared_ptr<PlayerDummy> playerDummy_;
 	std::shared_ptr<Mist> mist_;
 
 	// アニメーション
@@ -412,6 +417,7 @@ private:
 	void UpdateWeapon(void);	// 武器の更新
 	void UpdateWeaponCapsule();	// 武器カプセルの更新
 
+	// 音関連の初期化
 	void InitEffect(void);
 
 	// サウンド

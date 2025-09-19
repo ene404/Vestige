@@ -18,7 +18,8 @@ std::vector<std::string> AsoUtility::Split(std::string& line, char delimiter)
     std::string field;
     std::vector<std::string> result;
     
-    while (getline(stream, field, delimiter)) {
+    while (getline(stream, field, delimiter)) 
+    {
         result.push_back(field);
     }
 

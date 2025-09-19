@@ -115,7 +115,6 @@ void ThrustAttack::StopEffect(void)
 {
 }
 
-// Å‰‚Í’x‚­A‰Á‘¬‚µAŒ¸Š
 float ThrustAttack::GetCurrentSpeed(float t)
 {
     if (t < DECELERATION_RATE)

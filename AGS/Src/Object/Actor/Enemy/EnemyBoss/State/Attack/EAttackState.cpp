@@ -34,7 +34,8 @@ void EAttackState::Enter(EnemyBoss& boss)
     {
         boss.GetAttackStateMachine()->Change(boss, attackToExecute);
     }
-    else {
+    else 
+    {
         boss.ChangeState(EnemyBoss::STATE::CHASE);
     }
 }

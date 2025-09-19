@@ -87,7 +87,6 @@ void GameScene::Init(void)
 	player_->SetEnemy(enemyBoss_);
 	player_->SetEnemyDummy(enemyBossDummy_);
 	player_->SetMist(mist_);
-	enemyBoss_->SetPlayerDummy(playerDummy_);
 	enemyBoss_->SetMist(mist_);
 
 	deathFadeAlpha_ = 0;
@@ -497,12 +496,14 @@ void GameScene::DrawHelp(void)
 	SetFontSize(18);
 
 	// コマンドと説明に分ける
-	const char* helpLabels[] = {
+	const char* helpLabels[] = 
+	{
 		"視点操作", "移動", "ダッシュ", "回避", "攻撃", "強攻撃",
 		"ロックオン", "必殺技", "アイテム使用", "アイテム変更",
 		"操作確認"
 	};
-	const char* helpInputs[] = {
+	const char* helpInputs[] = 
+	{
 		"マウス or 右スティック",
 		"WASDキー or 左スティック",
 		"Shift or Aボタン",

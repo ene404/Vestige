@@ -8,17 +8,15 @@
 EnemyBossCombatSystem::EnemyBossCombatSystem(EnemyBoss& boss) 
     :
     boss_(boss), 
-    comboRestTime_(COMBO_RESET_TIME)
+    comboRestTime_(COMBO_RESET_TIME),
+    attackCooldown_(ATTACK_COOLDOWN),
+    currentCooldown_(0.0f),
+    isAttacking_(false),
+    attackDuration_(ATTACK_DURATION),
+    attackTimer_(0.0f),
+    comboCount_(0),
+    maxCombo_(MAX_COMBO)
 {
-    attackCooldown_ = ATTACK_COOLDOWN;
-    currentCooldown_ = 0.0f;
-    isAttacking_ = false;
-    attackDuration_ = ATTACK_DURATION;
-    attackTimer_ = 0.0f;
-    comboCount_ = 0;
-    maxCombo_ = MAX_COMBO;
-    comboResetTimer_ = 0.0f;
-
     InitEffect();
 }
 
@@ -57,8 +55,10 @@ void EnemyBossCombatSystem::Update(float deltaTime)
 
 void EnemyBossCombatSystem::ExcuteAttack(EnemyBoss::ATK_STATE pattern)
 {
-    if (!CanAttack())return;
-    if (comboCount_ >= maxCombo_)return;//コンボ上限チェック
+    if (!CanAttack() || comboCount_ >= maxCombo_)
+    {
+        return; //攻撃できない状態また攻撃カウントが上限に達したときは通さない
+    }
 
     isAttacking_ = true;
     attackTimer_ = 0.0f;
@@ -100,7 +100,7 @@ bool EnemyBossCombatSystem::IsHit()
         int playerId = boss_.GetPlayer().GetID();
         if (hitPlayers_.find(playerId) == hitPlayers_.end())
         {
-            for (int i = hits.HitNum-1; i >=0 ; i--)
+            for (int i = hits.HitNum - 1; i >= 0; i--)
             {
                 auto ePos = hits.Dim[i].HitPosition;
                 VECTOR wCenter = VScale(VAdd(boss_.GetTopPos(), boss_.GetDownPos()), 0.5f);
@@ -135,7 +135,6 @@ bool EnemyBossCombatSystem::IsHit()
             }
             hitPlayers_.insert(playerId);
             isHit = true;
-
         }
     }
 

@@ -154,7 +154,7 @@ void EnemyScarecrow::DrawHpBar(void)
     // ògê¸ÅiîíÅj
     DrawBox(x, y, x + width, y + height, GetColor(MAX_COL, MAX_COL, MAX_COL), FALSE);
 
-    SetFontSize(16);
+    SetFontSize(DEFAULT_FONT_SIZE);
 }
 
 void EnemyScarecrow::Damage(int damage)

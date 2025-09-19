@@ -100,26 +100,31 @@ void EventScene::Update(void)
 
 	if (isPressingButton)
 	{
-		if (!isLongPressing) {
+		if (!isLongPressing) 
+		{
 			// 長押し開始
 			isLongPressing = true;
 			longPressStartTime = GetNowCount();
 			PlaySoundMem(iKeySHandle_, DX_PLAYTYPE_LOOP, true);
 		}
 	}
-	else { // 左クリックが離された、またはボタン領域外にマウスがある
+	else 
+	{ 
+		// 左クリックが離された、またはボタン領域外にマウスがある
 		// 長押し中断
 		StopSoundMem(iKeySHandle_);
 		isLongPressing = false;
 		longPressStartTime = 0; // リセット
 	}
 
-	if (isLongPressing) {
+	if (isLongPressing) 
+	{
 		int currentTime = GetNowCount();
 		int elapsedTime = currentTime - longPressStartTime;
 
 		// 長押し完了判定
-		if (elapsedTime >= LONG_PRESS_DURATION_MS) {
+		if (elapsedTime >= LONG_PRESS_DURATION_MS) 
+		{
 			// 長押し完了！シーン遷移
 			StopSoundMem(iKeySHandle_);
 			PlaySoundMem(cMaxSHandle_, DX_PLAYTYPE_BACK, true);
@@ -131,7 +136,8 @@ void EventScene::Update(void)
 	{
 		isStateFrame_ = true;
 	}
-	else {
+	else 
+	{
 		isStateFrame_ = false;
 	}
 
@@ -165,7 +171,8 @@ void EventScene::Update(void)
 	case EventScene::STATE::CAMERA_PAN_TO_ENEMY:
 		player_->ChangeState(EventPlayer::STATE::IDLE);
 		enemy_->Update();
-		if (stateTimer_ > PAN_TIME_LIMIT_FIRST) {
+		if (stateTimer_ > PAN_TIME_LIMIT_FIRST) 
+		{
 			enemy_->ChangeState(EventEnemy::STATE::WALK);
 		}
 		if (stateTimer_ > PAN_TIME_LIMIT_SECOND)
@@ -241,7 +248,8 @@ void EventScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 	VECTOR initialPlayerPos = { 0.0f,0.0f, 0.0f };
 
 	// イベントシーンに入った最初のフレームでのみ初期カメラ位置を設定
-	if (!isInitialized_ && GetState() == EventScene::STATE::START && IsStateEnterFrame()) {
+	if (!isInitialized_ && GetState() == EventScene::STATE::START && IsStateEnterFrame()) 
+	{
 		initialPlayerPos = GetPlayer()->GetTransform().pos;
 		pos = VAdd(initialPlayerPos, EVENT_CAMERA_POS);
 		targetPos = VAdd(initialPlayerPos, EVENT_TARGET_POS);
@@ -255,7 +263,8 @@ void EventScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 	switch (GetState())
 	{
 	case EventScene::STATE::START:
-		if (!isInitialized_) {
+		if (!isInitialized_) 
+		{
 			// プレイヤーの左前上方にカメラを配置
 			initialPlayerPos = GetPlayer()->GetTransform().pos;
 
@@ -267,7 +276,8 @@ void EventScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 		targetPos = VAdd(initialPlayerPos, EVENT_START_TARGET_POS);
 		break;
 	case EventScene::STATE::STEP_PLAYER_FORWARD:
-		if (!isInitialized_) {
+		if (!isInitialized_) 
+		{
 			// プレイヤーの左前上方にカメラを配置
 			initialPlayerPos = GetPlayer()->GetTransform().pos;
 			// カメラの位置：プレイヤーの右後ろ上
@@ -397,14 +407,15 @@ void EventScene::InitSound(void)
 		ResourceManager::SRC::EVENT_BGM).handleId_;
 	ChangeVolumeSoundMem(BGM_VALUME, bgmSHandle_);
 
+	// 再生中かどうか
 	isBgm_ = false;
 
-	// inputKey
+	// 入力されているときの音
 	iKeySHandle_ = ResourceManager::GetInstance().Load(
 		ResourceManager::SRC::GAUGE_BGM2).handleId_;
 	ChangeVolumeSoundMem(INPUTKEY_VALUME, iKeySHandle_);
 
-	//countMax
+	// 入力が完了したときの音
 	cMaxSHandle_ = ResourceManager::GetInstance().Load(
 		ResourceManager::SRC::GAUGE_BGM1).handleId_;
 	ChangeVolumeSoundMem(COUNTMAX_VALUME, cMaxSHandle_);

@@ -221,5 +221,8 @@ EnemyBoss::ATK_STATE EnemyBossCombatController::GetNextAttackInSeries() const
     {
         return currentAttackSeries_[currentSeriesIndex_];
     }
-    return EnemyBoss::ATK_STATE::NONE;
+    else
+    {
+        return EnemyBoss::ATK_STATE::NONE;
+    }
 }

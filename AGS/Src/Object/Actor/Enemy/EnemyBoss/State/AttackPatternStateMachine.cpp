@@ -12,7 +12,9 @@ AttackPatternStateMachine::AttackPatternStateMachine(EnemyBoss& boss)
 void AttackPatternStateMachine::Update(EnemyBoss& boss)
 {
     if (curAState_)
+    {
         curAState_->Update(boss);
+    }
 }
 
 void AttackPatternStateMachine::SetUpdateFunction(EnemyBoss::ATK_STATE aStateId, std::shared_ptr<IEnemyAttackState> stateInstance)
@@ -23,16 +25,22 @@ void AttackPatternStateMachine::SetUpdateFunction(EnemyBoss::ATK_STATE aStateId,
 void AttackPatternStateMachine::ChangeState(EnemyBoss::ATK_STATE newState)
 {
     if (states_.count(newState) == 0)
+    {
         return;
+    }
 
     if (curAState_)
+    {
         curAState_->Exit(boss_);
+    }
 
     curAState_ = states_[newState];
     curAStateId_ = newState;
 
     if (curAState_)
+    {
         curAState_->Enter(boss_);
+    }
 }
 
 EnemyBoss::ATK_STATE AttackPatternStateMachine::GetCurrentAStateId() const

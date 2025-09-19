@@ -32,8 +32,6 @@ void SetUpAttack::Update(EnemyBoss& boss)
     // チャージフェーズ
     if (timer_ < CHARGE_DURATION)
     {
-        // チャージ中のエフェクト更新など
-
         // バフ適用タイミングのチェック
         if (!buffApplied_ && timer_ >= BUFF_APPLY_TIME)
         {

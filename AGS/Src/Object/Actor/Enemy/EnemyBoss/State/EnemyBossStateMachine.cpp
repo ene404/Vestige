@@ -29,7 +29,10 @@ EnemyStateMachine::~EnemyStateMachine()
 
 void EnemyStateMachine::Update(EnemyBoss& boss)
 {
-	if (curState_)curState_->Update(boss);
+	if (curState_)
+	{
+		curState_->Update(boss);
+	}
 }
 
 void EnemyStateMachine::Add(EnemyBoss::STATE stateId, std::shared_ptr<IEnemyState> stateInstance)
@@ -39,13 +42,22 @@ void EnemyStateMachine::Add(EnemyBoss::STATE stateId, std::shared_ptr<IEnemyStat
 
 void EnemyStateMachine::ChangeState(EnemyBoss::STATE newState)
 {
-	if (states_.count(newState) == 0)return;
-	if (curState_)curState_->Exit(boss_);	// 現在の状態を終了
+	if (states_.count(newState) == 0)
+	{
+		return;
+	}
+	if (curState_)
+	{
+		curState_->Exit(boss_);	// 現在の状態を終了
+	}
 
 	curState_ = states_[newState];
 	curStateId_ = newState;
 
-	if (curState_)curState_->Enter(boss_);	// 新しい状態を開始
+	if (curState_)
+	{
+		curState_->Enter(boss_);	// 新しい状態を開始
+	}
 }
 
 EnemyBoss::STATE EnemyStateMachine::GetCurrentStateId() const

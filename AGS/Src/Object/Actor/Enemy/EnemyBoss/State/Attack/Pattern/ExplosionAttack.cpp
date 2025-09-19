@@ -58,7 +58,6 @@ void ExplosionAttack::Update(EnemyBoss& boss)
     // フェーズ2: 固定されたターゲット位置への移動
     else if (!reachedTargetPos_)
     {
-
         VECTOR dirVec = VSub(targetPosition_, boss.GetTransform().pos);
         if (AsoUtility::MagnitudeF(dirVec) > DIRECTION_VEC_LIMIT)
         {

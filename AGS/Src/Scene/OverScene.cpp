@@ -30,7 +30,8 @@ void OverScene::Init(void)
 	SceneManager::GetInstance().GetCamera()->ChangeMode(Camera::MODE::FIXED_POINT);
 	SceneManager::GetInstance().GetCamera()->ChangeGameCamera(Camera::GAME_CAMERA::MOUSE);
 
-	for (int i = 0; i < PARTICLE_COUNT; ++i) {
+	for (int i = 0; i < PARTICLE_COUNT; ++i) 
+	{
 		particles_[i].x = static_cast<float>(rand() % Application::SCREEN_SIZE_X);
 		particles_[i].y = static_cast<float>(rand() % Application::SCREEN_SIZE_Y);
 		particles_[i].vx = ((rand() % PARTICLE_VX_RAND_MAX) / PARTICLE_VX_DIVISOR - PARTICLE_VX_CENTER) * PARTICLE_VX_RANGE;
@@ -53,7 +54,8 @@ void OverScene::Update(void)
 	phase_ += PHASE_INCREMENT;
 
 	// 入力受付（Enterキーでタイトルに戻る）
-	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_RETURN) || ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN)) {
+	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_RETURN) || ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN)) 
+	{
 		PlaySoundMem(enterSe_, DX_PLAYTYPE_BACK, true);
 		SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TITLE);
 	}
@@ -94,7 +96,8 @@ void OverScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 
 void OverScene::DrawParticles(void)
 {
-	for (int i = 0; i < PARTICLE_COUNT; ++i) {
+	for (int i = 0; i < PARTICLE_COUNT; ++i) 
+	{
 		particles_[i].x += particles_[i].vx;
 		particles_[i].y += particles_[i].vy;
 

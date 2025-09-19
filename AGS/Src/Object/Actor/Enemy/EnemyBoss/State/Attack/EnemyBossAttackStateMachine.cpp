@@ -58,7 +58,10 @@ void EnemyBossAttackStateMachine::Change(EnemyBoss& boss, EnemyBoss::ATK_STATE t
 
 void EnemyBossAttackStateMachine::Update(EnemyBoss& boss)
 {
-	if (curState_)curState_->Update(boss);
+	if (curState_)
+	{
+		curState_->Update(boss);
+	}
 }
 
 EnemyBoss::ATK_STATE EnemyBossAttackStateMachine::GetCurrentStateType() const
@@ -68,17 +71,29 @@ EnemyBoss::ATK_STATE EnemyBossAttackStateMachine::GetCurrentStateType() const
 
 void EnemyBossAttackStateMachine::Reset(EnemyBoss& boss)
 {
-	if (curState_) 
+	if (curState_)
 	{
 		curState_->Exit(boss);
 	}
+
 	curState_ = nullptr;
-	if(!boss.IsDead())curStateId_ = EnemyBoss::ATK_STATE::NONE;
+	if (!boss.IsDead())
+	{
+		curStateId_ = EnemyBoss::ATK_STATE::NONE;
+	}
 }
 
 bool EnemyBossAttackStateMachine::IsFinished() const
 {
-	return curState_ ? curState_->IsFinished() : true;
+	if (curState_)
+	{
+		return curState_->IsFinished();
+	}
+	else
+	{
+		return true;
+	}
+
 }
 
 void EnemyBossAttackStateMachine::StopEffect(void)
@@ -89,9 +104,15 @@ void EnemyBossAttackStateMachine::StopEffect(void)
 	case EnemyBoss::ATK_STATE::NONE:
 	{
 		auto roarState = std::static_pointer_cast<RoarAttack>(states_[EnemyBoss::ATK_STATE::ROAR]);
-		if (roarState)roarState->StopEffect();
+		if (roarState)
+		{
+			roarState->StopEffect();
+		}
 		auto exploState = std::static_pointer_cast<ExplosionAttack>(states_[EnemyBoss::ATK_STATE::EXPLOSION]);
-		if (exploState)exploState->StopEffect();
+		if (exploState)
+		{
+			exploState->StopEffect();
+		}
 	}
 		break;
 	default:

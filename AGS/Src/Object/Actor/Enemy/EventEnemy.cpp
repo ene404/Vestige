@@ -66,6 +66,7 @@ void EventEnemy::Init(void)
 	transform_.quaRotLocal =
 		Quaternion::Euler({ 0.0f, AsoUtility::Deg2RadF(0.0f), 0.0f });
 	
+	// 敵をプレイヤーの方を向かせる
 	LookAt(player_.GetTransform().pos);
 
 	transform_.Update();
@@ -97,7 +98,7 @@ void EventEnemy::Init(void)
 	UpdateRightWeapon();
 	UpdateWeapon();
 
-	//eSHandle
+	// 薙ぎ払い音
 	sHandle_ = ResourceManager::GetInstance().Load(
 		ResourceManager::SRC::ATTACK_SE).handleId_;
 	ChangeVolumeSoundMem(SOUND_VALUE, sHandle_);
@@ -245,8 +246,6 @@ void EventEnemy::ChangeStateStandBy(void)
 
 void EventEnemy::UpdateNone(void)
 {
-	// 此処
-
 	// 移動方向に応じた回転
 	Rotate();
 	LookAt(player_.GetTransform().pos);
@@ -263,8 +262,6 @@ void EventEnemy::UpdateNone(void)
 
 void EventEnemy::UpdateIdle(void)
 {
-	// 此処
-
 	// 移動方向に応じた回転
 	Rotate();
 	LookAt(player_.GetTransform().pos);
@@ -281,8 +278,6 @@ void EventEnemy::UpdateIdle(void)
 
 void EventEnemy::UpdateWalk(void)
 {
-	// 此処
-
 	// 移動方向に応じた回転
 	Rotate();
 	LookAt(player_.GetTransform().pos);
@@ -299,8 +294,6 @@ void EventEnemy::UpdateWalk(void)
 
 void EventEnemy::UpdateLook(void)
 {
-	// 此処
-
 	// 移動方向に応じた回転
 	Rotate();
 	LookAt(player_.GetTransform().pos);
@@ -375,12 +368,17 @@ void EventEnemy::LookAt(VECTOR pos)
 
 	VECTOR dir = VSub(targetPosXZ, BossPos);
 	float length = AsoUtility::MagnitudeF(dir);
-	if (length < LENGTH_LIMIT)return;
+
+	if (length < LENGTH_LIMIT)
+	{
+		return;
+	}
 
 	dir = VNorm(dir);
 	Quaternion lookRot = Quaternion::LookRotation(dir);
 
 	const float slerpRotio = SLEARP_RATIO;
+
 	// スムーズに回転(球面線形補間)
 	transform_.quaRot = Quaternion::Slerp(transform_.quaRot, lookRot, slerpRotio);
 }
@@ -418,7 +416,7 @@ void EventEnemy::CollisionGravity(void)
 	gravHitPosUp_ = VAdd(movedPos_, VScale(dirUpGravity, gravityPow));
 	gravHitPosUp_ = VAdd(gravHitPosUp_, VScale(dirUpGravity, checkPow * 2.0f));
 	gravHitPosDown_ = VAdd(movedPos_, VScale(dirGravity, checkPow * -1.0f));
-	for (const auto c : colliders_)
+	for (const auto& c : colliders_)
 	{
 
 		// 地面との衝突
@@ -449,7 +447,7 @@ void EventEnemy::CollisionCapsule(void)
 	Capsule cap = Capsule(*capsule_, trans);
 
 	// カプセルとの衝突判定
-	for (const auto c : colliders_)
+	for (const auto& c : colliders_)
 	{
 		auto hits = MV1CollCheck_Capsule(
 			c->modelId_, -1,
@@ -506,9 +504,18 @@ void EventEnemy::CalcGravityPow(void)
 
 bool EventEnemy::IsEndLanding(ANIM_TYPE anim)
 {
-	if (state_ == STATE::WALK)return false;
-	if (animationController_->GetPlayType() != (int)anim)return false;
-	return animationController_->IsEnd();
+	if (state_ == STATE::WALK)
+	{
+		return false;
+	}
+	if (animationController_->GetPlayType() != (int)anim)
+	{
+		return false;
+	}
+	else
+	{
+		return animationController_->IsEnd();
+	}
 }
 
 VECTOR EventEnemy::WeaponTopPos(VECTOR pos)
@@ -518,11 +525,12 @@ VECTOR EventEnemy::WeaponTopPos(VECTOR pos)
 
 void EventEnemy::UpdateRightWeapon(void)
 {
-	// 手首 → 手 の向きベクトル
+	// 手首から手の向きベクトルを求める
 	wristPos = MV1GetFramePosition(transform_.modelId, wristIndex_);
 	handPos = MV1GetFramePosition(transform_.modelId, handIndex_);
 
-	VECTOR dir = VSub(handPos, wristPos); // 向きベクトル
+	// 向きベクトル
+	VECTOR dir = VSub(handPos, wristPos);
 	dir = VNorm(dir); // 正規化して単位ベクトルにする
 
 	// 向きから角度を算出
@@ -559,7 +567,7 @@ void EventEnemy::UpdateRightWeapon(void)
 
 void EventEnemy::UpdateWeapon()
 {
-	// 手首 → 手 の向きベクトル
+	// 手首から手の向きベクトルを求める
 	weaponTopPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_);
 	weaponDownPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_);
 

@@ -13,9 +13,11 @@ EnemyScarecrowDummy::EnemyScarecrowDummy(EnemyScarecrow& enemyScarecrow) :enemyS
 	transform_.pos = INIT_POS;
 	transform_.quaRot = Quaternion();
 	transform_.quaRotLocal =
-		Quaternion::Euler({ INIT_QUAROT_LOCAL_X,
-							AsoUtility::Deg2RadF(INIT_QUAROT_LOCAL_Y),
-							INIT_QUAROT_LOCAL_Z });
+		Quaternion::Euler({ 
+			INIT_QUAROT_LOCAL_X,
+			AsoUtility::Deg2RadF(INIT_QUAROT_LOCAL_Y),
+			INIT_QUAROT_LOCAL_Z 
+			});
 	transform_.Update();
 }
 

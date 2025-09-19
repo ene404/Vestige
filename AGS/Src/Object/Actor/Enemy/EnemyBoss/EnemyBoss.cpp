@@ -43,7 +43,6 @@
 EnemyBoss::EnemyBoss(Player& player) 
 	:
 	player_(player),
-	playerDummy_(nullptr),
 	mist_(nullptr),
 	weapon_(nullptr),
 	stateMachine_(nullptr),
@@ -93,46 +92,7 @@ EnemyBoss::EnemyBoss(Player& player)
 	sHandle_(0),
 	isSound_(false)
 {
-	//// 移動関連
-	//moveDir_ = AsoUtility::VECTOR_ZERO;
-	//movedPos_ = AsoUtility::VECTOR_ZERO;
-	//movePow_ = AsoUtility::VECTOR_ZERO;
-
-	//// 手・武器の座標(当たり判定)
-	//wristPos = AsoUtility::VECTOR_ZERO;
-	//handPos = AsoUtility::VECTOR_ZERO;
-	//weaponTopPos_ = AsoUtility::VECTOR_ZERO;
-	//weaponDownPos_ = AsoUtility::VECTOR_ZERO;
-	//capsuleDir_ = AsoUtility::VECTOR_ZERO;
-	//capsuleCenter_ = AsoUtility::VECTOR_ZERO;
-	//radius_ = 0;
-
-	//// エフェクトフラグの初期化
-	//isStunEffectActive_ = false;
-	//isSetUpEffectActive_ = false;
-
-	//// 重力攻撃の衝突位置(地面と頭上)
-	//gravHitPosDown_ = AsoUtility::VECTOR_ZERO;
-	//gravHitPosUp_ = AsoUtility::VECTOR_ZERO;
-
-	//// ジャンプ関連
-	//jumpPow_ = AsoUtility::VECTOR_ZERO;
-	//isJump_ = false;
-
-	//// スタン関連
-	//isStunned_ = false;
-	//stunTimer_ = 0.0f;
-
-	//// 死亡状態
-	//isDead_ = false;
-	//deadTimer_ = 0.0f;
-
-	//// ステップ関連
-	//stepCooldown_ = 0.0f;
-
-	//// 攻撃バフ状態
-	//currentAttackMultiplier_ = 1.0f;
-	//attackBuffTimer_ = 0.0f;
+	
 }
 
 EnemyBoss::~EnemyBoss(void)
@@ -232,7 +192,8 @@ void EnemyBoss::Update(void)
 	}
 
 	// プレイヤーがライトニングを発動させた場合、ボスをスタンさせ、HPを減算
-	if (player_.IsLightning()) {
+	if (player_.IsLightning()) 
+	{
 		SetStunned(STUN_TIME);
 		hp_ -= LIGHTNING_DAMAGE;
 	}
@@ -266,8 +227,11 @@ void EnemyBoss::Update(void)
 		StopSetupEffect();
 		
 		// 死亡状態固有の処理を行う
-		if (stateMachine_) stateMachine_->Update(*this);
-		
+		if (stateMachine_)
+		{
+			stateMachine_->Update(*this);
+		}
+
 		// 死亡中は他の更新処理を行わず、ここで処理を終了
 		return;
 	}
@@ -406,7 +370,7 @@ void EnemyBoss::Update(void)
 	SetPosPlayingEffekseer3DEffect(
 				effectBuffPlayId_, 
 				transform_.pos.x, transform_.pos.y, transform_.pos.z
-	);
+				);
 
 	// 重力影響計算
 	CalcGravityPow();
@@ -426,7 +390,11 @@ void EnemyBoss::Draw(void)
 	// モデルの描画
 	MV1DrawModel(transform_.modelId);
 
-	//DrawDebug();
+	// デバックのみ
+#ifdef _DEBUG
+	DrawDebug();
+#endif // DEBUG
+
 }
 
 void EnemyBoss::SetPosition(VECTOR pos)
@@ -479,7 +447,7 @@ void EnemyBoss::DrawDebug(void)
 	// デバック表示(状態ステート)
 	if (stateMachine_)
 	{
-		VECTOR screenPos = { transform_.pos.x,transform_.pos.y + 100.0f,transform_.pos.z };
+		VECTOR screenPos = { transform_.pos.x,transform_.pos.y + DEBUG_STATE_POS_Y,transform_.pos.z };
 		VECTOR screen2D = ConvWorldPosToScreenPos(screenPos);
 		if (screen2D.z >= 0.0f)
 		{
@@ -490,14 +458,14 @@ void EnemyBoss::DrawDebug(void)
 	// デバック表示(攻撃ステート)
 	if (attackFSM_)
 	{
-		VECTOR screenPos = { transform_.pos.x,transform_.pos.y + 200.0f,transform_.pos.z };
+		VECTOR screenPos = { transform_.pos.x,transform_.pos.y + DEBUG_ATTACK_POS_Y,transform_.pos.z };
 		VECTOR screen2D = ConvWorldPosToScreenPos(screenPos);
 		attackFSM_->DrawDebugInfo(screen2D);
 	}
 
-	DrawFormatString(720, 32, 0xffffff, "dist_=%f", GetPlayerDistanceXZ());
-	DrawFormatString(720, 64, 0xffffff, "desdt_=%f", deadTimer_);
-	DrawFormatString(720, 96, 0xffffff, "bt_=%f", attackBuffTimer_);
+	DrawFormatString(DEBUG_POS_X, DEBUG_DIST_POS_Y, 0xffffff, "dist_=%f", GetPlayerDistanceXZ());
+	DrawFormatString(DEBUG_POS_X, DEBUG_DEADTIME_POSY, 0xffffff, "deadt_=%f", deadTimer_);
+	DrawFormatString(DEBUG_POS_X, DEBUG_ATTACKBUFF_POSY, 0xffffff, "bt_=%f", attackBuffTimer_);
 }
 
 VECTOR EnemyBoss::GetWeaponCenter(void)
@@ -557,11 +525,11 @@ void EnemyBoss::UpdateWeapon(void)
 
 void EnemyBoss::UpdateWeaponCapsule()
 {
-	// 手首 → 手 の向きベクトル
+	// 手首から手の向きベクトルを求める
 	weaponTopPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_);
 	weaponDownPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_);
 
-	// 向きベクトル
+	// 武器方向ベクトル
 	VECTOR dir = VSub(weaponTopPos_, weaponDownPos_);
 
 	// 正規化して単位ベクトルにする
@@ -629,12 +597,19 @@ int EnemyBoss::GetHp(void) const
 
 void EnemyBoss::ChangeState(STATE newState)
 {
-	if (stateMachine_)stateMachine_->ChangeState(newState);
+	if (stateMachine_)
+	{
+		stateMachine_->ChangeState(newState);
+	}
 }
 
 void EnemyBoss::ChangeAttack(ATK_STATE newAttack)
 {
-	if (attackFSM_)attackFSM_->Change(*this, newAttack);
+	if (attackFSM_)
+	{
+		attackFSM_->Change(*this, newAttack);
+
+	}
 }
 
 void EnemyBoss::SetNextAttackType(ATK_STATE type)
@@ -720,8 +695,11 @@ void EnemyBoss::OnDeathAnimationFinished(void)
 
 void EnemyBoss::StartStunEffect(void)
 {
-	if (!isStunEffectActive_) isStunEffectActive_ = true;
-		
+	if (!isStunEffectActive_)
+	{
+		isStunEffectActive_ = true;
+	}
+
 	effectStunPlayId_ = PlayEffekseer3DEffect(effectStunResId_);
 
 	SetScalePlayingEffekseer3DEffect(effectStunPlayId_, STUN_EFFECT_SIZE, STUN_EFFECT_SIZE, STUN_EFFECT_SIZE);
@@ -745,7 +723,10 @@ bool EnemyBoss::IsStunEffectActive(void)
 
 void EnemyBoss::StartSetupEffect()
 {
-	if (!isSetUpEffectActive_) isSetUpEffectActive_ = true; 
+	if (!isSetUpEffectActive_)
+	{
+		isSetUpEffectActive_ = true;
+	}
 
 	effectBuffPlayId_ = PlayEffekseer3DEffect(effectBuffResId_);
 
@@ -785,8 +766,14 @@ int EnemyBoss::GetMaxHp() const
 
 float EnemyBoss::GetHpRatio() const
 {
-	if (maxHp_ <= 0) return 0.0f;
-	return static_cast<float>(hp_) / maxHp_;
+	if (maxHp_ <= 0)
+	{
+		return 0.0f;
+	}
+	else
+	{
+		return static_cast<float>(hp_) / maxHp_;
+	}
 }
 
 EnemyBoss::STATE EnemyBoss::GetCurrentStateId() const
@@ -898,13 +885,14 @@ void EnemyBoss::CollisionGravity(void)
 	// 重力の強さ
 	float gravityPow = Planet::DEFAULT_GRAVITY_POW;
 
+	// 頭上判定時の押出力
 	float checkPow = GRAVITY_CHECK_POW;
 	gravHitPosUp_ = VAdd(movedPos_, VScale(dirUpGravity, gravityPow));
 
 	//天井衝突チェックのために広めに2.0fをかけて判定をとる
 	gravHitPosUp_ = VAdd(gravHitPosUp_, VScale(dirUpGravity, checkPow * 2.0f));
 	gravHitPosDown_ = VAdd(movedPos_, VScale(dirGravity, checkPow));
-	for (const auto c : colliders_)
+	for (const auto& c : colliders_)
 	{
 		// 地面との衝突
 		auto hit = MV1CollCheck_Line(
@@ -931,7 +919,7 @@ void EnemyBoss::CollisionCapsule(void)
 	Capsule cap = Capsule(*capsule_, trans);
 
 	// カプセルとの衝突判定
-	for (const auto c : colliders_)
+	for (const auto& c : colliders_)
 	{
 		auto hits = MV1CollCheck_Capsule(
 			c->modelId_, -1,
@@ -1219,11 +1207,6 @@ float EnemyBoss::GetStepCooldown(void)
 void EnemyBoss::SetStepCooldown(float duration)
 {
 	stepCooldown_ = duration;
-}
-
-void EnemyBoss::SetPlayerDummy(std::shared_ptr<PlayerDummy> playerDummy)
-{
-	playerDummy_ = playerDummy;
 }
 
 void EnemyBoss::SetMist(std::shared_ptr<Mist> mist)

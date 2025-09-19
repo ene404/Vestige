@@ -23,6 +23,7 @@ void ClearScene::Init(void)
 	isBgm_ = true;
 
 	ChangeFont("Garamond");
+
 	// ‰æ‘œ“Ç‚Ýž‚Ý
 	imgClear_ = resMng_.Load(ResourceManager::SRC::CLEAR).handleId_;
 
@@ -30,7 +31,8 @@ void ClearScene::Init(void)
 	SceneManager::GetInstance().GetCamera()->ChangeMode(Camera::MODE::FIXED_POINT);
 	SceneManager::GetInstance().GetCamera()->ChangeGameCamera(Camera::GAME_CAMERA::MOUSE);
 
-	for (int i = 0; i < PARTICLE_COUNT; ++i) {
+	for (int i = 0; i < PARTICLE_COUNT; ++i) 
+	{
 		particles_[i].x = static_cast<float>(rand() % Application::SCREEN_SIZE_X);
 		particles_[i].y = static_cast<float>(rand() % Application::SCREEN_SIZE_Y);
 		particles_[i].vx = ((rand() % PARTICLE_VX_RAND_MAX) / PARTICLE_VX_DIVISOR - PARTICLE_VX_CENTER) * PARTICLE_VX_RANGE;
@@ -95,7 +97,8 @@ void ClearScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 
 void ClearScene::DrawParticles(void)
 {
-	for (int i = 0; i < PARTICLE_COUNT; ++i) {
+	for (int i = 0; i < PARTICLE_COUNT; ++i) 
+	{
 		particles_[i].x += particles_[i].vx;
 		particles_[i].y += particles_[i].vy;
 

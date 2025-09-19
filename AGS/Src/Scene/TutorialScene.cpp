@@ -58,7 +58,6 @@ void TutorialScene::Init(void)
 	// かかしダミー
 	enemyScarecrowDummy_ = std::make_shared<EnemyScarecrowDummy>(*enemyScarecrow_);
 
-
 	// ステージ
 	stage_ = std::make_unique<Stage>(*player_, *enemyBoss_);
 	stage_->Init();
@@ -457,7 +456,8 @@ void TutorialScene::LookUpdate(void)
 	int dx = nowX - prevLookX_;
 	int dy = nowY - prevLookY_;
 
-	if (abs(dx) > LOOK_MOUSE_MOVE_THRESHOLD || abs(dy) > LOOK_MOUSE_MOVE_THRESHOLD) {
+	if (abs(dx) > LOOK_MOUSE_MOVE_THRESHOLD || abs(dy) > LOOK_MOUSE_MOVE_THRESHOLD) 
+	{
 		lookCounter_++;
 	}
 
@@ -486,7 +486,8 @@ void TutorialScene::LookUpdate(void)
 	prevLookX_ = nowX;
 	prevLookY_ = nowY;
 
-	if (lookCounter_ > REQUIRED_LOOK_MOVES) {
+	if (lookCounter_ > REQUIRED_LOOK_MOVES) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::MOVE;
 	}
@@ -504,7 +505,8 @@ void TutorialScene::MoveUpdate(void)
 	if (ins.IsTrgDown(KEY_INPUT_S) || input.Y > STICK_MOVE_THRESHOLD) movedS_ = true;
 	if (ins.IsTrgDown(KEY_INPUT_D) || input.X > STICK_MOVE_THRESHOLD) movedD_ = true;
 
-	if (movedW_ && movedA_ && movedS_ && movedD_) {
+	if (movedW_ && movedA_ && movedS_ && movedD_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::DASH;  // DASHへ
 	}
@@ -514,11 +516,13 @@ void TutorialScene::DashUpdate(void)
 {
 	static float runTime = 0.0f;
 
-	if (player_->IsRun()) {
+	if (player_->IsRun()) 
+	{
 		runTime += SceneManager::GetInstance().GetDeltaTime();
 	}
 
-	if (runTime >= REQUIRED_RUN_TIME) {
+	if (runTime >= REQUIRED_RUN_TIME) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::ROLLING;
 		runTime = 0.0f;
@@ -527,11 +531,13 @@ void TutorialScene::DashUpdate(void)
 
 void TutorialScene::RollingUpdate(void)
 {
-	if (player_->GetRollingCnt() >= Player::MAX_ROLLING_CNT - JUDGE_MARGIN) {
+	if (player_->GetRollingCnt() >= Player::MAX_ROLLING_CNT - JUDGE_MARGIN) 
+	{
 		rolled_ = true;
 	}
 
-	if (rolled_) {
+	if (rolled_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::ATTACK;
 	}
@@ -539,11 +545,13 @@ void TutorialScene::RollingUpdate(void)
 
 void TutorialScene::AttackUpdate(void)
 {
-	if (player_->GetAttackCnt() >= Player::MAX_ATTACK_CNT - JUDGE_MARGIN) {
+	if (player_->GetAttackCnt() >= Player::MAX_ATTACK_CNT - JUDGE_MARGIN) 
+	{
 		attacked_ = true;
 	}
 
-	if (attacked_) {
+	if (attacked_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::COMBO_ATTACK;
 	}
@@ -551,11 +559,13 @@ void TutorialScene::AttackUpdate(void)
 
 void TutorialScene::ComboAttackUpdate(void)
 {
-	if (player_->GetAttackCnt2() <= 0.0f && player_->GetAttackCnt3() >= Player::MAX_ATTACK_CNT_3 - JUDGE_MARGIN) {
+	if (player_->GetAttackCnt2() <= 0.0f && player_->GetAttackCnt3() >= Player::MAX_ATTACK_CNT_3 - JUDGE_MARGIN) 
+	{
 		comboAttacked_ = true;
 	}
 
-	if (comboAttacked_) {
+	if (comboAttacked_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::HEAVY_ATTACK;
 	}
@@ -563,11 +573,13 @@ void TutorialScene::ComboAttackUpdate(void)
 
 void TutorialScene::HeavyAttackUpdate(void)
 {
-	if (player_->GetStrongAttackCnt() >= Player::MAX_STRONG_ATTACK_CNT - JUDGE_MARGIN) {
+	if (player_->GetStrongAttackCnt() >= Player::MAX_STRONG_ATTACK_CNT - JUDGE_MARGIN) 
+	{
 		heavyAttacked_ = true;
 	}
 
-	if (heavyAttacked_) {
+	if (heavyAttacked_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::LOCKON;
 	}
@@ -581,11 +593,13 @@ void TutorialScene::LockonUpdate(void)
 	// 入力状態を取得
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
 
-	if (ins.IsTrgMouseMiddle() || input.Buttons[PAD_BUTTON_LOCKON]) {
+	if (ins.IsTrgMouseMiddle() || input.Buttons[PAD_BUTTON_LOCKON]) 
+	{
 		lockedOn_ = true;
 	}
 
-	if (lockedOn_) {
+	if (lockedOn_) 
+	{
 		player_->TutorialUlt();
 		player_->SetUltValue(Player::ULT_MAX_VALUE);
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
@@ -600,11 +614,13 @@ void TutorialScene::UltUpdate(void)
 	// 入力状態を取得
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
 
-	if (ins.IsTrgDown(KEY_INPUT_Q) || input.Buttons[PAD_BUTTON_ULT]) {
+	if (ins.IsTrgDown(KEY_INPUT_Q) || input.Buttons[PAD_BUTTON_ULT]) 
+	{
 		usedUlt_ = true;
 	}
 
-	if (usedUlt_) {
+	if (usedUlt_) 
+	{
 		player_->Damage(TUTORIAL_DAMAGE);
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::ITEM;
@@ -618,11 +634,13 @@ void TutorialScene::ItemUpdate(void)
 	// 入力状態を取得
 	GetJoypadDirectInputState(DX_INPUT_PAD1, &input);
 
-	if (ins.IsTrgDown(KEY_INPUT_R) || input.Buttons[PAD_BUTTON_ITEM]) {
+	if (ins.IsTrgDown(KEY_INPUT_R) || input.Buttons[PAD_BUTTON_ITEM]) 
+	{
 		usedItem_ = true;
 	}
 
-	if (usedItem_) {
+	if (usedItem_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::ITEM_CHANGE;
 	}
@@ -642,14 +660,16 @@ void TutorialScene::ItemChangeUpdate(void)
 	// 回転量を蓄積
 	wheelCounter += wheelDelta;
 
-	if (wheelCounter >= WHEEL_THRESHOLD || input.POV[0] == POV_RIGHT) {
+	if (wheelCounter >= WHEEL_THRESHOLD || input.POV[0] == POV_RIGHT) 
+	{
 		itemChanged_ = true;
 	}
 	else if (wheelCounter <= -WHEEL_THRESHOLD || input.POV[0] == POV_LEFT)
 	{
 		itemChanged_ = true;
 	}
-	if (itemChanged_) {
+	if (itemChanged_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::HELP;
 	}
@@ -657,7 +677,8 @@ void TutorialScene::ItemChangeUpdate(void)
 
 void TutorialScene::HelpUpdate(void)
 {
-	if (wasHelp_) {
+	if (wasHelp_) 
+	{
 		PlaySoundMem(nextSe_, DX_PLAYTYPE_BACK, true);
 		tutorialStep_ = TutorialStep::DEFEAT_ENEMY;
 	}
@@ -665,10 +686,12 @@ void TutorialScene::HelpUpdate(void)
 
 void TutorialScene::DefeatEnemyUpdate(void)
 {
-	if (player_->IsLightning()) {
+	if (player_->IsLightning()) 
+	{
 		enemyScarecrow_->Damage(LIGHTNING_DAMAGE);
 	}
-	if (player_->IsHitAttackEnemyScarecrow()) {
+	if (player_->IsHitAttackEnemyScarecrow()) 
+	{
 		enemyScarecrow_->Damage(player_->GetAttack());
 	}
 	if (!enemyScarecrow_->IsAlive())
@@ -689,12 +712,14 @@ void TutorialScene::DrawHelp(void)
 	SetFontSize(HELP_FONT_SIZE);
 
 	// コマンドと説明に分ける
-	const char* helpLabels[] = {
+	const char* helpLabels[] = 
+	{
 		"視点操作", "移動", "ダッシュ", "回避", "攻撃", "強攻撃",
 		"ロックオン", "必殺技", "アイテム使用", "アイテム変更",
 		"操作確認"
 	};
-	const char* helpInputs[] = {
+	const char* helpInputs[] = 
+	{
 		"マウス or 右スティック",
 		"WASDキー or 左スティック",
 		"Shift or Aボタン",
