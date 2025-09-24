@@ -14,8 +14,8 @@ void UltPotion::Init(void)
     ultPotionSe_ = resMng_.Load(ResourceManager::SRC::ULT_POTION_SE).handleId_;
     ChangeVolumeSoundMem(220, ultPotionSe_);
 
-	itemImg_ = resMng_.Load(ResourceManager::SRC::ULT_POTION).handleId_;
-	count_ = 1;
+    itemImg_ = resMng_.Load(ResourceManager::SRC::ULT_POTION).handleId_;
+    count_ = 1;
 }
 
 void UltPotion::Update(void)
@@ -77,10 +77,10 @@ void UltPotion::Draw(void)
 void UltPotion::Use(void)
 {
     PlaySoundMem(ultPotionSe_, DX_PLAYTYPE_BACK, true);
-	count_--;
+    count_--;
 }
 
 int UltPotion::GetCount(void)
 {
-	return count_;
+    return count_;
 }

@@ -4,7 +4,7 @@
 #include "../Player/Player.h"
 #include "PlayerDummy.h"
 
-PlayerDummy::PlayerDummy(Player& playerDummy):player_(playerDummy)
+PlayerDummy::PlayerDummy(Player& playerDummy) :player_(playerDummy)
 {
 	// ƒ‚ƒfƒ‹‚ÌŠî–{İ’è
 	transform_.SetModel(resMng_.LoadModelDuplicate(

@@ -940,33 +940,30 @@ void Player::DrawHp(float hp, int maxHp)
 	int healColor = GetColor(HEAL_COLOR_R, HEAL_COLOR_G, HEAL_COLOR_B); // 回復分（中間緑）
 	int borderColor = GetColor(HP_OUTER_BORDER_COLOR_R, HP_OUTER_BORDER_COLOR_G, HP_OUTER_BORDER_COLOR_B);   // 外枠（ダークグレー）
 
-	int barWidth = HP_SIZE_X;
-	int barHeight = HP_SIZE_Y;
-
 	// 背景と枠（2重に描いてやや立体的に見せる）
-	DrawBox(HP_POS_X - OUTER_BORDER_OFFSET, HP_POS_Y - OUTER_BORDER_OFFSET, HP_POS_X + barWidth + OUTER_BORDER_OFFSET, HP_POS_Y + barHeight + OUTER_BORDER_OFFSET, borderColor, TRUE);     // 外枠（暗）
-	DrawBox(HP_POS_X - INNER_BORDER_OFFSET, HP_POS_Y - INNER_BORDER_OFFSET, HP_POS_X + barWidth + INNER_BORDER_OFFSET, HP_POS_Y + barHeight + INNER_BORDER_OFFSET, GetColor(HP_INNER_BORDER_COLOR_R, HP_INNER_BORDER_COLOR_G, HP_INNER_BORDER_COLOR_B), TRUE); // 内枠（明）
+	DrawBox(HP_POS_X - OUTER_BORDER_OFFSET, HP_POS_Y - OUTER_BORDER_OFFSET, HP_POS_X + HP_SIZE_X + OUTER_BORDER_OFFSET, HP_POS_Y + HP_SIZE_Y + OUTER_BORDER_OFFSET, borderColor, TRUE);     // 外枠（暗）
+	DrawBox(HP_POS_X - INNER_BORDER_OFFSET, HP_POS_Y - INNER_BORDER_OFFSET, HP_POS_X + HP_SIZE_X + INNER_BORDER_OFFSET, HP_POS_Y + HP_SIZE_Y + INNER_BORDER_OFFSET, GetColor(HP_INNER_BORDER_COLOR_R, HP_INNER_BORDER_COLOR_G, HP_INNER_BORDER_COLOR_B), TRUE); // 内枠（明）
 
 	// 背景（HPがゼロのときのベース）
-	DrawBox(HP_POS_X, HP_POS_Y, HP_POS_X + barWidth, HP_POS_Y + barHeight, GetColor(HP_BG_COLOR_R, HP_BG_COLOR_G, HP_BG_COLOR_B), TRUE);
+	DrawBox(HP_POS_X, HP_POS_Y, HP_POS_X + HP_SIZE_X, HP_POS_Y + HP_SIZE_Y, GetColor(HP_BG_COLOR_R, HP_BG_COLOR_G, HP_BG_COLOR_B), TRUE);
 
 	// ダメージ分
-	int damageW = static_cast<int>(barWidth * damageHp_ / maxHp);
+	int damageW = static_cast<int>(HP_SIZE_X * damageHp_ / maxHp);
 	if (damageW > 0)
-		DrawBox(HP_POS_X, HP_POS_Y, HP_POS_X + damageW, HP_POS_Y + barHeight, damageColor, TRUE);
+		DrawBox(HP_POS_X, HP_POS_Y, HP_POS_X + damageW, HP_POS_Y + HP_SIZE_Y, damageColor, TRUE);
 
 	// 回復分
-	int healW = static_cast<int>(barWidth * healHp_ / maxHp);
+	int healW = static_cast<int>(HP_SIZE_X * healHp_ / maxHp);
 	if (healW > 0)
-		DrawBox(HP_POS_X, HP_POS_Y, HP_POS_X + healW, HP_POS_Y + barHeight, healColor, TRUE);
+		DrawBox(HP_POS_X, HP_POS_Y, HP_POS_X + healW, HP_POS_Y + HP_SIZE_Y, healColor, TRUE);
 
 	// 現在HP（グラデーション風：上と下で色を変える）
-	int hpW = static_cast<int>(barWidth * currentHp_ / maxHp);
+	int hpW = static_cast<int>(HP_SIZE_X * currentHp_ / maxHp);
 	if (hpW > 0)
 	{
-		int halfH = barHeight / 2;
+		int halfH = HP_SIZE_Y / 2;
 		DrawBox(HP_POS_X, HP_POS_Y, HP_POS_X + hpW, HP_POS_Y + halfH, hpColorTop, TRUE);      // 上半分
-		DrawBox(HP_POS_X, HP_POS_Y + halfH, HP_POS_X + hpW, HP_POS_Y + barHeight, hpColorBottom, TRUE);  // 下半分
+		DrawBox(HP_POS_X, HP_POS_Y + halfH, HP_POS_X + hpW, HP_POS_Y + HP_SIZE_Y, hpColorBottom, TRUE);  // 下半分
 	}
 }
 
@@ -1424,7 +1421,7 @@ bool Player::IsHitAttackEnemyScarecrow(void)
 
 int Player::GetHp(void)
 {
-	return static_cast<int>(currentHp_);
+	return currentHp_;
 }
 
 int Player::GetStamina(void)

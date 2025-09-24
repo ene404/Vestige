@@ -7,15 +7,13 @@ class ItemBase
 {
 public:
 
-	// コンストラクタ
-	ItemBase(void);
+	ItemBase(void);					// コンストラクタ
 
-	// デストラクタ
-	virtual ~ItemBase(void);
+	virtual ~ItemBase(void);		// デストラクタ
 
-	virtual void Init(void) = 0;
-	virtual void Update(void) = 0;
-	virtual void Draw(void) = 0;
+	virtual void Init(void) = 0;	// 初期化処理
+	virtual void Update(void) = 0;	// 毎フレームの更新処理
+	virtual void Draw(void) = 0;	// 描画処理
 
 	const Transform& GetTransform(void) const;
 

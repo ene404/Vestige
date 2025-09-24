@@ -14,8 +14,8 @@ void HpPotion::Init(void)
     hpPotionSe_ = resMng_.Load(ResourceManager::SRC::HP_POTION_SE).handleId_;
     ChangeVolumeSoundMem(220, hpPotionSe_);
 
-	itemImg_= resMng_.Load(ResourceManager::SRC::HP_POTION).handleId_;
-	count_ = 5;
+    itemImg_ = resMng_.Load(ResourceManager::SRC::HP_POTION).handleId_;
+    count_ = 5;
 }
 
 void HpPotion::Update(void)
@@ -49,7 +49,7 @@ void HpPotion::Draw(void)
     // u‰ñ•œ–òv‚Ìƒ‰ƒxƒ‹‚Æ”wŒi
     SetFontSize(18);
     const char* label = "‰ñ•œ–ò";
-    int textWidth = GetDrawStringWidth(label, static_cast<int>(strlen(label)));
+    int textWidth = GetDrawStringWidth(label, strlen(label));
     int textX = 100 - textWidth / 2;
     int textY = 590;
     int paddingX = 10;
@@ -77,10 +77,10 @@ void HpPotion::Draw(void)
 void HpPotion::Use(void)
 {
     PlaySoundMem(hpPotionSe_, DX_PLAYTYPE_BACK, true);
-	count_--;
+    count_--;
 }
 
 int HpPotion::GetCount(void)
 {
-	return count_;
+    return count_;
 }

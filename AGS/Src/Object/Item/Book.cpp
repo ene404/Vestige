@@ -62,7 +62,7 @@ void Book::Draw(void)
     // 「魔法書」のラベルと背景
     SetFontSize(18);
     const char* label = "魔法書";
-    int textWidth = GetDrawStringWidth(label, static_cast<int>(strlen(label)));
+    int textWidth = GetDrawStringWidth(label, strlen(label));
     int textX = 100 - textWidth / 2;
     int textY = 590;
     int paddingX = 10;

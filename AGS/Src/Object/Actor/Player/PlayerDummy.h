@@ -7,16 +7,16 @@ class Player;
 class PlayerDummy :public ActorBase
 {
 public:
-	// サイズ
-	static constexpr float SIZE = 1.5f;
 
-	PlayerDummy(Player& playerDummy);
+	static constexpr float SIZE = 1.5f;		// サイズ
 
-	~PlayerDummy(void);
+	PlayerDummy(Player& playerDummy);	// コンストラクタ
 
-	void Init(void)override;
-	void Update(void)override;
-	void Draw(void)override;
+	~PlayerDummy(void);	// デストラクタ
+
+	void Init(void) override;						// 初期化処理
+	void Update(void) override;						// 毎フレーム更新処理
+	void Draw(void) override;						// 描画処理
 
 private:
 	Player& player_;

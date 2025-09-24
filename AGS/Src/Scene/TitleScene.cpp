@@ -36,8 +36,7 @@ void TitleScene::Init(void)
 	// 定点カメラ
 	SceneManager::GetInstance().GetCamera()->ChangeMode(Camera::MODE::FIXED_POINT);
 
-	for (int i = 0; i < PARTICLE_COUNT; ++i) 
-	{
+	for (int i = 0; i < PARTICLE_COUNT; ++i) {
 		particles_[i].x = static_cast<float>(rand() % Application::SCREEN_SIZE_X);
 		particles_[i].y = static_cast<float>(rand() % Application::SCREEN_SIZE_Y);
 		particles_[i].vx = ((rand() % PARTICLE_VX_RAND_MAX) / PARTICLE_VX_DIVISOR - PARTICLE_VX_CENTER) * PARTICLE_VX_RANGE;
@@ -97,14 +96,11 @@ void TitleScene::Update(void)
 	bool rightPressed = (currentPOV == POV_RIGHT && prevPOVDirection_ != POV_RIGHT) || stickRightPressed;
 	bool aPressed = ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN);
 
-	if (isConfirmingTutorial_) 
-	{
-		if (leftPressed || rightPressed) 
-		{
+	if (isConfirmingTutorial_) {
+		if (leftPressed || rightPressed) {
 			confirmSelected_ = 1 - confirmSelected_;
 		}
-		if (aPressed) 
-		{
+		if (aPressed) {
 			PlaySoundMem(clickSe_, DX_PLAYTYPE_BACK, true);
 			if (confirmSelected_ == 0)
 				SceneManager::GetInstance().ChangeScene(SceneManager::SCENE_ID::TUTORIAL);
@@ -116,16 +112,14 @@ void TitleScene::Update(void)
 		// マウスでの選択
 		SetFontSize(FONT_SIZE_CONFIRM);
 		const char* options[CONFIRM_OPTION_COUNT] = { "はい", "いいえ" };
-		int optionWidths[CONFIRM_OPTION_COUNT] = 
-		{
-			GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
-			GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
+		int optionWidths[CONFIRM_OPTION_COUNT] = {
+			GetDrawStringWidth(options[0], strlen(options[0])),
+			GetDrawStringWidth(options[1], strlen(options[1]))
 		};
 		int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 		int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
 
-		for (int i = 0; i < CONFIRM_OPTION_COUNT; ++i) 
-		{
+		for (int i = 0; i < CONFIRM_OPTION_COUNT; ++i) {
 			int optX = startX;
 			for (int j = 0; j < i; ++j)
 				optX += optionWidths[j] + OPTION_PADDING;
@@ -133,11 +127,9 @@ void TitleScene::Update(void)
 			int optW = optionWidths[i];
 
 			if (mouseX >= optX && mouseX <= optX + optW &&
-				mouseY >= OPTION_Y_POS && mouseY <= OPTION_Y_POS + OPTION_HEIGHT) 
-			{
+				mouseY >= OPTION_Y_POS && mouseY <= OPTION_Y_POS + OPTION_HEIGHT) {
 				confirmSelected_ = i;
-				if (mouseClicked) 
-				{
+				if (mouseClicked) {
 					PlaySoundMem(clickSe_, DX_PLAYTYPE_BACK, true);
 					StopSoundMem(titleBgm_);
 					if (i == 0)
@@ -156,26 +148,21 @@ void TitleScene::Update(void)
 		confirmHighlightPosX_ += (targetX - confirmHighlightPosX_) * CONFIRM_LERP_SPEED;
 		confirmHighlightPosY_ += (OPTION_Y_POS - confirmHighlightPosY_) * CONFIRM_LERP_SPEED;
 	}
-	else 
-	{
-		if (upPressed || downPressed) 
-		{
+	else {
+		if (upPressed || downPressed) {
 			menuSelected_ = (menuSelected_ + 1) % 2;
 		}
-		if (aPressed) 
-		{
+		if (aPressed) {
 			PlaySoundMem(clickSe_, DX_PLAYTYPE_BACK, true);
-			if (menuSelected_ == 0) 
-			{
+			if (menuSelected_ == 0) {
 				ChangeFont("MS 明朝");
 				confirmSelected_ = 0;
 
 				SetFontSize(FONT_SIZE_CONFIRM);
 				const char* options[MENU_ITEM_COUNT] = { "はい", "いいえ" };
-				int optionWidths[MENU_ITEM_COUNT] = 
-				{
-					GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
-					GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
+				int optionWidths[MENU_ITEM_COUNT] = {
+					GetDrawStringWidth(options[0], strlen(options[0])),
+					GetDrawStringWidth(options[1], strlen(options[1]))
 				};
 				int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 				int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -189,8 +176,7 @@ void TitleScene::Update(void)
 
 				isConfirmingTutorial_ = true;  // ← フラグは最後に
 			}
-			else 
-			{
+			else {
 				SceneManager::GetInstance().SetGameEnd(true);
 			}
 			goto EndInputUpdate;
@@ -198,10 +184,9 @@ void TitleScene::Update(void)
 
 		// マウスでのメニュー選択
 		SetFontSize(FONT_SIZE_MENU);
-		for (int i = 0; i < MENU_ITEM_COUNT; ++i) 
-		{
+		for (int i = 0; i < MENU_ITEM_COUNT; ++i) {
 			const char* text = menuItems_[i];
-			int textWidth = GetDrawStringWidth(text, static_cast<int>(strlen(text)));
+			int textWidth = GetDrawStringWidth(text, strlen(text));
 
 			int x = (Application::SCREEN_SIZE_X - textWidth) / 2;
 			int y = MENU_BASE_Y + i * MENU_ITEM_INTERVAL;
@@ -212,23 +197,19 @@ void TitleScene::Update(void)
 			int rectY2 = y + MENU_TEXT_HEIGHT + MENU_PADDING_Y;
 
 			if (mouseX >= rectX1 && mouseX <= rectX2 &&
-				mouseY >= rectY1 && mouseY <= rectY2) 
-			{
+				mouseY >= rectY1 && mouseY <= rectY2) {
 				menuSelected_ = i;
-				if (mouseClicked) 
-				{
+				if (mouseClicked) {
 					PlaySoundMem(clickSe_, DX_PLAYTYPE_BACK, true);
-					if (i == 0) 
-					{
+					if (i == 0) {
 						ChangeFont("MS 明朝");
 						confirmSelected_ = 0;
 
 						SetFontSize(FONT_SIZE_CONFIRM);
 						const char* options[MENU_ITEM_COUNT] = { "はい", "いいえ" };
-						int optionWidths[MENU_ITEM_COUNT] = 
-						{
-							GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
-							GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
+						int optionWidths[MENU_ITEM_COUNT] = {
+							GetDrawStringWidth(options[0], strlen(options[0])),
+							GetDrawStringWidth(options[1], strlen(options[1]))
 						};
 						int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 						int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -242,8 +223,7 @@ void TitleScene::Update(void)
 
 						isConfirmingTutorial_ = true;  // ← これも最後に
 					}
-					else 
-					{
+					else {
 						SceneManager::GetInstance().SetGameEnd(true);
 					}
 					goto EndInputUpdate;
@@ -275,23 +255,21 @@ void TitleScene::Draw(void)
 	int mouseX, mouseY;
 	GetMousePoint(&mouseX, &mouseY);
 
-	if (isConfirmingTutorial_) 
-	{
+	if (isConfirmingTutorial_) {
 		// --- チュートリアル確認画面の描画 ---
 		const char* question = "チュートリアルを受けますか？";
 		const char* options[CONFIRM_OPTION_COUNT] = { "はい", "いいえ" };
 
 		SetFontSize(FONT_SIZE_CONFIRM);
-		int qWidth = GetDrawStringWidth(question, static_cast<int>(strlen(question)));
+		int qWidth = GetDrawStringWidth(question, strlen(question));
 		int qX = (Application::SCREEN_SIZE_X - qWidth) / 2;
 
 		DrawString(qX + SHADOW_OFFSET, CONFIRM_QUESTION_Y + SHADOW_OFFSET, question, GetColor(COLOR_TEXT_SHADOW_R, COLOR_TEXT_SHADOW_G, COLOR_TEXT_SHADOW_B));
 		DrawString(qX, CONFIRM_QUESTION_Y, question, GetColor(COLOR_TEXT_MAIN_R, COLOR_TEXT_MAIN_G, COLOR_TEXT_MAIN_B));
 
-		int optionWidths[CONFIRM_OPTION_COUNT] = 
-		{
-			GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
-			GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
+		int optionWidths[CONFIRM_OPTION_COUNT] = {
+			GetDrawStringWidth(options[0], strlen(options[0])),
+			GetDrawStringWidth(options[1], strlen(options[1]))
 		};
 
 		int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
@@ -304,8 +282,7 @@ void TitleScene::Draw(void)
 			GetColor(COLOR_HIGHLIGHT_BG_R, COLOR_HIGHLIGHT_BG_G, COLOR_HIGHLIGHT_BG_B), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		for (int i = 0; i < CONFIRM_OPTION_COUNT; ++i) 
-		{
+		for (int i = 0; i < CONFIRM_OPTION_COUNT; ++i) {
 			int optX = startX;
 			for (int j = 0; j < i; ++j)
 				optX += optionWidths[j] + OPTION_PADDING;
@@ -328,7 +305,7 @@ void TitleScene::Draw(void)
 	for (int i = 0; i < MENU_ITEM_COUNT; ++i)
 	{
 		const char* text = menuItems_[i];
-		int textWidth = GetDrawStringWidth(text, static_cast<int>(strlen(text)));
+		int textWidth = GetDrawStringWidth(text, strlen(text));
 		int x = (Application::SCREEN_SIZE_X - textWidth) / 2;
 		int y = MENU_BASE_Y + i * MENU_ITEM_INTERVAL;
 
@@ -340,8 +317,7 @@ void TitleScene::Draw(void)
 		bool isHovered = (mouseX >= rectX1 && mouseX <= rectX2 &&
 			mouseY >= rectY1 && mouseY <= rectY2);
 
-		if (i == menuSelected_) 
-		{
+		if (i == menuSelected_) {
 			float glowOffsetY = sin(menuEffectPhase_) * GLOW_OFFSET_Y;
 			int boxY1 = (int)(highlightPosY_ - MENU_PADDING_Y + glowOffsetY);
 			int boxY2 = (int)(highlightPosY_ + FONT_SIZE_MENU + MENU_PADDING_Y + glowOffsetY);
@@ -367,8 +343,7 @@ void TitleScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 
 void TitleScene::DrawParticles(void)
 {
-	for (int i = 0; i < PARTICLE_COUNT; ++i) 
-	{
+	for (int i = 0; i < PARTICLE_COUNT; ++i) {
 		particles_[i].x += particles_[i].vx;
 		particles_[i].y += particles_[i].vy;
 
