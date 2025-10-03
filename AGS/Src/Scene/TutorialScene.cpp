@@ -17,6 +17,7 @@
 
 TutorialScene::TutorialScene(void)
 {
+
 }
 
 TutorialScene::~TutorialScene(void)

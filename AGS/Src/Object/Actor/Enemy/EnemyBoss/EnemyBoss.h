@@ -28,7 +28,6 @@ public:
 	static constexpr float SIZE = 1.3f;
 
 	// 初期ローカル回転
-
 	static constexpr float INIT_QUAROT_LOCAL_X = 0.0f;
 	static constexpr float INIT_QUAROT_LOCAL_Y = 180.0f;
 	static constexpr float INIT_QUAROT_LOCAL_Z = 0.0f;
@@ -272,17 +271,31 @@ public:
 	// プレイヤーがボスの正面にいるかを判定する
 	bool IsPlayerInFront(float viewAngleDeg, float maxDistance);
 
-	// 攻撃制限フラグ
-	bool hasUsedRoarBelow50Percent_ = false;
-	bool hasUsedExplosionBelow50Percent_ = false;
+	// 咆哮をせず５割を切った状態を取得
+	bool HasUsedRoarBelow50Percent(void);
 
-	// SETUP攻撃がHP4割以下で一度使用されたかどうかのフラグ
-	bool hasUsedSetupBelow40Percent_ = false;
+	// 咆哮をせず５割を切った状態を変更
+	void SetHasUsedRoarBelow50Percent(bool flag);
 
+	// 爆発攻撃をせず５割を切った状態を取得
+	bool HasUsedExplosionBelow50Percent(void);
+
+	// 爆発攻撃をせず５割を切った状態を変更
+	void SetHasUsedExplosionBelow50Percent(bool flag);
+	
+	//SETUP攻撃がHP4割以下で一度使用されたかを取得
+	bool HasUsedSetupBelow40Percent(void);
+
+	// //SETUP攻撃がHP4割以下で一度使用された状態かを取得
+	void SetHasUsedSetupBelow40Percent(bool flag);
+
+	// 霧との当たり判定
 	void CollisionMist(void);
 
+	// 回避のクールダウン時間を取得
 	float GetStepCooldown(void);
 
+	// 回避のクールダウン時間を設定
 	void SetStepCooldown(float duration);
 
 private:
@@ -382,6 +395,12 @@ private:
 	float deadTimer_;		// 死亡時のタイマー
 
 	float stepCooldown_;	// Stepクールダウン
+
+	// 攻撃制限フラグ
+	bool hasUsedRoarBelow50Percent_;		// 咆哮をせず５割を切ったとき
+	bool hasUsedExplosionBelow50Percent_;	// 爆発攻撃をせず５割を切ったとき
+	bool hasUsedSetupBelow40Percent_;	// SETUP攻撃がHP4割以下で一度使用されたかどうかのフラグ
+
 
 	// モデル情報の初期化
 	void InitModel(void);

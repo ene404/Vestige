@@ -133,25 +133,25 @@ void EnemyBossCombatController::GenerateNewAttackSeries(float dist)
     // HP5割以下で一度だけ、Roar , Explosion のどちらかを発動させる
     if (hpRatio <= HP_RATIO_HALF)
     {
-        if (!boss_.hasUsedRoarBelow50Percent_ && !IsAttackOnCooldown(EnemyBoss::ATK_STATE::ROAR)) 
+        if (!boss_.HasUsedRoarBelow50Percent() && !IsAttackOnCooldown(EnemyBoss::ATK_STATE::ROAR))
         {
             currentAttackSeries_.push_back(EnemyBoss::ATK_STATE::ROAR);
-            boss_.hasUsedRoarBelow50Percent_ = true;
+            boss_.SetHasUsedRoarBelow50Percent(true);
             return;
         }
-        if (!boss_.hasUsedExplosionBelow50Percent_ && !IsAttackOnCooldown(EnemyBoss::ATK_STATE::EXPLOSION)) 
+        if (!boss_.HasUsedExplosionBelow50Percent() && !IsAttackOnCooldown(EnemyBoss::ATK_STATE::EXPLOSION))
         {
             currentAttackSeries_.push_back(EnemyBoss::ATK_STATE::EXPLOSION);
-            boss_.hasUsedExplosionBelow50Percent_ = true;
+            boss_.SetHasUsedExplosionBelow50Percent(true);
             return;
         }
     }
     
     // Roar, Explosion が発動しなかった場合にチェックされる
-    if (hpRatio <= HP_RATIO_0_4 && !boss_.hasUsedSetupBelow40Percent_ && !IsAttackOnCooldown(EnemyBoss::ATK_STATE::SETUP))
+    if (hpRatio <= HP_RATIO_0_4 && !boss_.HasUsedSetupBelow40Percent() && !IsAttackOnCooldown(EnemyBoss::ATK_STATE::SETUP))
     {
         currentAttackSeries_.push_back(EnemyBoss::ATK_STATE::SETUP);
-        boss_.hasUsedSetupBelow40Percent_ = true;
+        boss_.SetHasUsedSetupBelow40Percent(true);
         return;
     }
 
@@ -161,8 +161,8 @@ void EnemyBossCombatController::GenerateNewAttackSeries(float dist)
         float minDist = pair.second.first;
         float maxDist = pair.second.second;
 
-        if ((attackType == EnemyBoss::ATK_STATE::ROAR && (hpRatio > HP_RATIO_HALF || boss_.hasUsedRoarBelow50Percent_)) ||
-            (attackType == EnemyBoss::ATK_STATE::EXPLOSION && (hpRatio > HP_RATIO_HALF || boss_.hasUsedExplosionBelow50Percent_)))
+        if ((attackType == EnemyBoss::ATK_STATE::ROAR && (hpRatio > HP_RATIO_HALF || boss_.HasUsedRoarBelow50Percent())) ||
+            (attackType == EnemyBoss::ATK_STATE::EXPLOSION && (hpRatio > HP_RATIO_HALF || boss_.HasUsedExplosionBelow50Percent())))
         {
             continue;
         }

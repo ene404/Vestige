@@ -14,8 +14,14 @@ ModelMaterial::ModelMaterial(
 	constBufFloat4SizeVS_ = constBufFloat4SizeVS;
 
 	// 頂点シェーダー用の定数バッファを作成
-	constBufVS_ = CreateShaderConstantBuffer(sizeof(FLOAT4) * constBufFloat4SizeVS);
-
+	if (constBufFloat4SizeVS > 0) 
+	{
+		constBufVS_ = CreateShaderConstantBuffer(sizeof(FLOAT4) * constBufFloat4SizeVS);
+	}
+	else
+	{
+		constBufVS_ = -1;
+	}
 
 	// ピクセルシェーダのロード
 	shaderPS_ = LoadPixelShader(
@@ -25,8 +31,15 @@ ModelMaterial::ModelMaterial(
 	constBufFloat4SizePS_ = constBufFloat4SizePS;
 
 	// ピクセルシェーダー用の定数バッファを作成
-	constBufPS_ = CreateShaderConstantBuffer(sizeof(FLOAT4) * constBufFloat4SizePS);
-
+	if (constBufFloat4SizePS > 0)
+	{
+		constBufPS_ = CreateShaderConstantBuffer(sizeof(FLOAT4) * constBufFloat4SizePS);
+	}
+	else
+	{
+		constBufPS_ = -1;
+	}
+	
 	// テクスチャアドレス
 	texAddress_ = TEXADDRESS::CLAMP;
 

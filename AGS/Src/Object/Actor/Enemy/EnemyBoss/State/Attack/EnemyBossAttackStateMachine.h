@@ -32,13 +32,14 @@ public:
 	// エフェクトの停止
 	void StopEffect(void);
 
+	// デバック表示用
 	void DrawDebugInfo(const VECTOR& screenPos);
 
 private:
-	std::map<EnemyBoss::ATK_STATE, std::shared_ptr<IEnemyAttackState>> states_;
-	std::shared_ptr<IEnemyAttackState> curState_;
-	EnemyBoss::ATK_STATE curStateId_;
+	std::map<EnemyBoss::ATK_STATE, std::shared_ptr<IEnemyAttackState>> states_;		// 現在の攻撃ステートとその攻撃ステートクラスを格納する
+	std::shared_ptr<IEnemyAttackState> curState_;									// 現在の攻撃ステート
+	EnemyBoss::ATK_STATE curStateId_;												// 現在の攻撃ステートID
 
-	static const std::map<EnemyBoss::ATK_STATE, const char*> attackStateNames_;
+	static const std::map<EnemyBoss::ATK_STATE, const char*> attackStateNames_;		// デバック用表示
 };
 

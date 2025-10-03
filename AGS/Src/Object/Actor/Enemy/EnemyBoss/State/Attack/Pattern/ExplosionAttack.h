@@ -55,8 +55,8 @@ public:
     void StopEffect(void) override;
 
 private:
-    EnemyBoss& boss_;
-    float selfStunDuration_; // 自身をスタンさせる時間
+    EnemyBoss& boss_;		        // ボス
+    float selfStunDuration_;        // 自身をスタンさせる時間
     VECTOR targetPosition_;         // 対象座標
     bool isAttack_;                 // 攻撃したかどうか
     bool targetPosionFixed_;        // 対象座標を固定するかどうか
@@ -65,16 +65,17 @@ private:
     bool hasSelfStunned_;           // 自身がスタン状態であるかどうか
 
     // エフェクト
-    int effectExploPlayId_;
-    int effectBuffResId_;
-    bool IsEffect_;
+    int effectExploPlayId_;         //　再生用ハンドル
+    int effectBuffResId_;           // エフェクトハンドル
+    bool IsEffect_;                 // 再生するかどうか
 
+    // エフェクトの初期化
     void InitEffect(void);
+
+    // エフェクトの更新
     void UpdateEffect(void);
 
-	int soundExplosion_;
-	bool soundPlayed_;
-    void InitSound(void);
-
+    // 音の初期化
+    void InitSound(void)override;
 };
 

@@ -34,8 +34,8 @@ void EDeadState::Update(EnemyBoss& boss)
     // 死亡アニメーションの進行を追跡
     if (!deathAnimationFinishedReported_) 
     {
-        timer_ += dt;
-        if (timer_ >= deathAnimationDuration_) 
+        time_ += dt;
+        if (time_ >= deathAnimationDuration_) 
         {
             // アニメーションが終了したと判断
             boss.OnDeathAnimationFinished();

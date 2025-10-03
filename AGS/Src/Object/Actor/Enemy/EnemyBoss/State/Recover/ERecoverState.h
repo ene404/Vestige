@@ -6,6 +6,7 @@ class ERecoverState
 
 public:
 
+	// ‘Ò‹@ŽžŠÔ
 	static constexpr float DURATION = 0.5f;
 
 	ERecoverState(void);

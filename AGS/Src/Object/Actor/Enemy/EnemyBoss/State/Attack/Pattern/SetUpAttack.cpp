@@ -70,3 +70,7 @@ bool SetUpAttack::IsFinished() const
 void SetUpAttack::StopEffect(void)
 {
 }
+
+void SetUpAttack::InitSound(void)
+{
+}

@@ -6,8 +6,8 @@ class EObserveState
 
 public:
 
-	static constexpr float DIST_LIMIT = 120.0f;
-	static constexpr float OBSERVE_TIME = 3.0f;
+	static constexpr float DIST_LIMIT = 120.0f;		// êßå¿ãóó£
+	static constexpr float OBSERVE_TIME = 3.0f;		// êßå¿éûä‘
 
 	EObserveState(void);
 	~EObserveState(void);

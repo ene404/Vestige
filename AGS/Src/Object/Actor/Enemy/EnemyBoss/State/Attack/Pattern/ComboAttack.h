@@ -16,7 +16,6 @@ public:
     // 音量
     static constexpr int SOUND_VALUE = 255;
 
-
     ComboAttack(EnemyBoss& boss);
     ~ComboAttack(void);
 
@@ -27,11 +26,10 @@ public:
     void StopEffect(void) override;
 
 private:
-    EnemyBoss& boss_;
     
-    // サウンド
-    int noHitSound_;
-    bool isSoundPlayed_;
-    void InitSound(void);
+    EnemyBoss& boss_;		// ボス
+
+    // 音の初期化
+    void InitSound(void)override;
 };
 

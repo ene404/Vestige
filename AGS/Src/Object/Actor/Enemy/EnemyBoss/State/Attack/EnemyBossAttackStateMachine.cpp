@@ -3,7 +3,7 @@
 #include "../Attack/Pattern/ExplosionAttack.h"
 #include "../Attack/Pattern/RoarAttack.h"
 
-// static map の実体を定義
+// static map の実体を定義(デバック表示のため)
 const std::map<EnemyBoss::ATK_STATE, const char*> EnemyBossAttackStateMachine::attackStateNames_ = {
 	{ EnemyBoss::ATK_STATE::NONE,			"NONE"        },
 	{ EnemyBoss::ATK_STATE::COMBO,			"COMBO"       },
@@ -98,7 +98,6 @@ bool EnemyBossAttackStateMachine::IsFinished() const
 
 void EnemyBossAttackStateMachine::StopEffect(void)
 {
-
 	switch (curStateId_)
 	{
 	case EnemyBoss::ATK_STATE::NONE:

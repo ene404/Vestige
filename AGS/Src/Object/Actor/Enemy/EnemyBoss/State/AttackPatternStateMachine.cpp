@@ -11,6 +11,7 @@ AttackPatternStateMachine::AttackPatternStateMachine(EnemyBoss& boss)
 
 void AttackPatternStateMachine::Update(EnemyBoss& boss)
 {
+    // 現在の攻撃パターンの更新を通す
     if (curAState_)
     {
         curAState_->Update(boss);
@@ -29,6 +30,7 @@ void AttackPatternStateMachine::ChangeState(EnemyBoss::ATK_STATE newState)
         return;
     }
 
+    // 現在の攻撃パターンの初期化を通す
     if (curAState_)
     {
         curAState_->Exit(boss_);
@@ -37,6 +39,7 @@ void AttackPatternStateMachine::ChangeState(EnemyBoss::ATK_STATE newState)
     curAState_ = states_[newState];
     curAStateId_ = newState;
 
+    // 現在の攻撃パターンの終了を通す
     if (curAState_)
     {
         curAState_->Enter(boss_);
