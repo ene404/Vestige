@@ -148,7 +148,6 @@ private:
 	std::shared_ptr<EnemyScarecrowDummy> enemyScarecrowDummy_;	// カカシのダミー敵
 
 	TutorialStep tutorialStep_;	// 現在のチュートリアルステップ
-	float uiAlpha_;				// UIの透明度
 
 	int lookCounter_;			// 視点移動判定用カウンタ
 	int prevLookX_;				// 前フレームの視点X座標

@@ -16,6 +16,37 @@
 #include "TutorialScene.h"
 
 TutorialScene::TutorialScene(void)
+	:
+	tutorialBgm_(resMng_.Load(ResourceManager::SRC::TUTORIAL_BGM).handleId_),
+	isBgm_(true),
+	nextSe_(resMng_.Load(ResourceManager::SRC::NEXT_SE).handleId_),
+	helpSe_(resMng_.Load(ResourceManager::SRC::HELP_SE).handleId_),
+	tutorialStep_(TutorialStep::LOOK),
+	lookCounter_(0),
+	prevLookX_(0),
+	prevLookY_(0),
+	movedW_(false),
+	movedA_(false),
+	movedS_(false),
+	movedD_(false),
+	dashed_(false),
+	rolled_(false),
+	attacked_(false),
+	comboAttacked_(false),
+	heavyAttacked_(false),
+	lockedOn_(false),
+	usedUlt_(false),
+	usedItem_(false),
+	itemChanged_(false),
+	nextStepTimer_(0.0f),
+	isHelp_(false),
+	helpBackImage_(-1),
+	wasHelp_(false),
+	postEffectScreen_(MakeScreen(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true)),
+	lightningMaterial_(std::make_unique<PixelMaterial>("Lightning.cso", 1)),
+	lightningTime_(GetNowCount() / MILLISECONDS_TO_SECONDS),
+	lightningPower_(0.0f)
+
 {
 }
 
@@ -32,15 +63,10 @@ void TutorialScene::Init(void)
 {
 	ChangeFont("MS ゴシック");
 
-	// 音
-	tutorialBgm_ = resMng_.Load(ResourceManager::SRC::TUTORIAL_BGM).handleId_;
-	isBgm_ = true;
 	ChangeVolumeSoundMem(TUTORIAL_BGM_VOL, tutorialBgm_);
 
-	nextSe_ = resMng_.Load(ResourceManager::SRC::NEXT_SE).handleId_;
 	ChangeVolumeSoundMem(NEXT_SE_VOL, nextSe_);
 
-	helpSe_ = resMng_.Load(ResourceManager::SRC::HELP_SE).handleId_;
 	ChangeVolumeSoundMem(HELP_SE_VOL, helpSe_);
 
 	// プレイヤー
@@ -82,50 +108,6 @@ void TutorialScene::Init(void)
 	player_->SetEnemyScarecrowDummy(enemyScarecrowDummy_);
 	player_->SetMist(mist_);
 
-
-	tutorialStep_ = TutorialStep::LOOK;
-
-	lookCounter_ = 0;
-	prevLookX_ = 0;
-	prevLookY_ = 0;
-
-	movedW_ = false;
-	movedA_ = false;
-	movedS_ = false;
-	movedD_ = false;
-
-	dashed_ = false;
-
-	rolled_ = false;
-
-	attacked_ = false;
-
-	comboAttacked_ = false;
-
-	heavyAttacked_ = false;
-
-	lockedOn_ = false;
-
-	usedItem_ = false;
-
-	itemChanged_ = false;
-
-	nextStepTimer_ = 0.0f;
-
-	isHelp_ = false;
-	helpBackImage_ = -1;
-	wasHelp_ = false;
-
-
-	// ポストエフェクト用スクリーン
-	postEffectScreen_ = MakeScreen(
-		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
-
-	// ポストエフェクト用(ライトニング)
-	lightningMaterial_ = std::make_unique<PixelMaterial>("Lightning.cso", 1);
-
-	lightningTime_ = GetNowCount() / MILLISECONDS_TO_SECONDS;
-	lightningPower_ = 0.0f;
 
 	lightningMaterial_->AddConstBuf({ lightningTime_, lightningPower_, 1.0f, 1.0f });
 
@@ -299,7 +281,7 @@ void TutorialScene::DrawUI(void)
 	if (!isHelp_)
 	{
 		player_->DrawHp(player_->GetHp(), Player::MAX_HP);
-		player_->DrawStamina(player_->GetStamina(), Player::MAX_STAMINA);
+		player_->DrawStamina(static_cast<float>(player_->GetStamina()), Player::MAX_STAMINA);
 		player_->DrawItem();
 		player_->DrawUlt();
 

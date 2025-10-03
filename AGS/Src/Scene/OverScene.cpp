@@ -6,6 +6,12 @@
 #include "OverScene.h"
 
 OverScene::OverScene(void)
+	:
+	overBgm_(resMng_.Load(ResourceManager::SRC::OVER_BGM).handleId_),
+	enterSe_(resMng_.Load(ResourceManager::SRC::CLICK_SE).handleId_),
+	isBgm_(true),
+	imgOver_(resMng_.Load(ResourceManager::SRC::OVER).handleId_),
+	particles_{}
 {
 }
 
@@ -15,16 +21,11 @@ OverScene::~OverScene(void)
 
 void OverScene::Init(void)
 {
-	// 音
-	overBgm_ = resMng_.Load(ResourceManager::SRC::OVER_BGM).handleId_;
 	ChangeVolumeSoundMem(OVER_BGM_VOL, overBgm_);
-	enterSe_ = resMng_.Load(ResourceManager::SRC::CLICK_SE).handleId_;
+
 	ChangeVolumeSoundMem(ENTER_SE_VOL, enterSe_);
-	isBgm_ = true;
 
 	ChangeFont("Garamond");
-	// 画像読み込み
-	imgOver_ = resMng_.Load(ResourceManager::SRC::OVER).handleId_;
 
 	// 定点カメラ
 	SceneManager::GetInstance().GetCamera()->ChangeMode(Camera::MODE::FIXED_POINT);
@@ -50,7 +51,6 @@ void OverScene::Update(void)
 
 	// シーン遷移
 	InputManager& ins = InputManager::GetInstance();
-	phase_ += PHASE_INCREMENT;
 
 	// 入力受付（Enterキーでタイトルに戻る）
 	if (InputManager::GetInstance().IsTrgDown(KEY_INPUT_RETURN) || ins.IsPadBtnTrgDown(InputManager::JOYPAD_NO::PAD1, InputManager::JOYPAD_BTN::DOWN)) {
@@ -66,7 +66,7 @@ void OverScene::Draw(void)
 	// ヒント表示（Enterで戻る）
 	SetFontSize(HINT_FONT_SIZE);
 	const char* hint = "Press Enter or A Button";
-	int hintWidth = GetDrawStringWidth(hint, strlen(hint));
+	int hintWidth = static_cast<int>(GetDrawStringWidth(hint, strlen(hint)));
 	int hintX = (Application::SCREEN_SIZE_X - hintWidth) / 2;
 
 	// 半透明の黒背景

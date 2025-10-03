@@ -3,6 +3,11 @@
 #include "Book.h"
 
 Book::Book(void)
+    :
+    bookSe_(resMng_.Load(ResourceManager::SRC::BOOK_SE).handleId_),
+    lightningSe_(resMng_.Load(ResourceManager::SRC::LIGHTNING_SE).handleId_),
+    effectLightningResId_(ResourceManager::GetInstance().Load(ResourceManager::SRC::LIGHTNING_EFFECT).handleId_),
+    effectLightningPlayId_(-1)
 {
 }
 
@@ -12,20 +17,13 @@ Book::~Book(void)
 
 void Book::Init(void)
 {
-    bookSe_ = resMng_.Load(ResourceManager::SRC::BOOK_SE).handleId_;
     ChangeVolumeSoundMem(220, bookSe_);
 
-    lightningSe_ = resMng_.Load(ResourceManager::SRC::LIGHTNING_SE).handleId_;
     ChangeVolumeSoundMem(220, lightningSe_);
 
     itemImg_ = resMng_.Load(ResourceManager::SRC::BOOK).handleId_;
     count_ = 1;
 
-    // エフェクト
-    effectLightningResId_ = ResourceManager::GetInstance().Load(
-        ResourceManager::SRC::LIGHTNING_EFFECT).handleId_;
-
-    // 大きさ
     float SCALE = 20.0f;
     SetScalePlayingEffekseer3DEffect(effectLightningPlayId_, SCALE, SCALE, SCALE);
 }
@@ -62,7 +60,7 @@ void Book::Draw(void)
     // 「魔法書」のラベルと背景
     SetFontSize(18);
     const char* label = "魔法書";
-    int textWidth = GetDrawStringWidth(label, strlen(label));
+    int textWidth = static_cast<int>(GetDrawStringWidth(label, strlen(label)));
     int textX = 100 - textWidth / 2;
     int textY = 590;
     int paddingX = 10;

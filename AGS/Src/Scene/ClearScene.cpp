@@ -6,6 +6,12 @@
 #include "ClearScene.h"
 
 ClearScene::ClearScene(void)
+	:
+	clearBgm_(resMng_.Load(ResourceManager::SRC::CLEAR_BGM).handleId_),
+	enterSe_(resMng_.Load(ResourceManager::SRC::CLICK_SE).handleId_),
+	isBgm_(true),
+	imgClear_(resMng_.Load(ResourceManager::SRC::CLEAR).handleId_),
+	particles_{}
 {
 }
 
@@ -15,16 +21,11 @@ ClearScene::~ClearScene(void)
 
 void ClearScene::Init(void)
 {
-	// 音
-	clearBgm_ = resMng_.Load(ResourceManager::SRC::CLEAR_BGM).handleId_;
 	ChangeVolumeSoundMem(CLEAR_BGM_VOL, clearBgm_);
-	enterSe_ = resMng_.Load(ResourceManager::SRC::CLICK_SE).handleId_;
+
 	ChangeVolumeSoundMem(ENTER_SE_VOL, enterSe_);
-	isBgm_ = true;
 
 	ChangeFont("Garamond");
-	// 画像読み込み
-	imgClear_ = resMng_.Load(ResourceManager::SRC::CLEAR).handleId_;
 
 	// 定点カメラ
 	SceneManager::GetInstance().GetCamera()->ChangeMode(Camera::MODE::FIXED_POINT);
@@ -67,7 +68,7 @@ void ClearScene::Draw(void)
 	// ヒント表示（Enterで戻る）
 	SetFontSize(HINT_FONT_SIZE);
 	const char* hint = "Press Enter or A Button";
-	int hintWidth = GetDrawStringWidth(hint, strlen(hint));
+	int hintWidth = static_cast<int>(GetDrawStringWidth(hint, strlen(hint)));
 	int hintX = (Application::SCREEN_SIZE_X - hintWidth) / 2;
 
 	// 半透明の黒背景

@@ -276,7 +276,7 @@ public:
 
 	bool IsHitAttackEnemyBoss(void);					// ボスに攻撃がヒットしたか
 	bool IsHitAttackEnemyScarecrow(void);				// かかしに攻撃がヒットしたか
-	int GetHp(void);									// 現在HP取得
+	float GetHp(void);									// 現在HP取得
 	int GetStamina(void);								// 現在スタミナ取得
 
 	void Damage(int damage);							// ダメージ処理
@@ -395,12 +395,6 @@ private:
 	VECTOR gravHitPosUp_;				// 上方向の接地判定座標
 
 	bool canAttack_;					// 攻撃可能かどうか
-
-	// 丸影
-	int imgShadow_;
-
-	// 黒画像
-	int imgBlack_;
 
 	// 武器のボーンインデックス
 	int weaponBoneIndex_;
