@@ -11,8 +11,22 @@
 #include "TitleScene.h"
 
 TitleScene::TitleScene(void)
+	:
+	imgTitle_(resMng_.Load(ResourceManager::SRC::TITLE).handleId_),
+	titleBgm_(resMng_.Load(ResourceManager::SRC::TITLE_BGM).handleId_),
+	clickSe_(resMng_.Load(ResourceManager::SRC::CLICK_SE).handleId_),
+	particles_{},
+	menuSelected_(0),
+	menuItems_{},
+	menuEffectPhase_(0.0f),
+	isConfirmingTutorial_(false),
+	confirmSelected_(0),
+	prevPOVDirection_(-1),
+	highlightPosY_(INIT_MENU_HIGHLIGHT_Y),
+	confirmHighlightPosX_(0.0f),
+	confirmHighlightPosY_(0.0f)
 {
-	imgTitle_ = -1;
+
 }
 
 TitleScene::~TitleScene(void)
@@ -22,12 +36,6 @@ TitleScene::~TitleScene(void)
 void TitleScene::Init(void)
 {
 	ChangeFont("Garamond");
-	// 画像読み込み
-	imgTitle_ = resMng_.Load(ResourceManager::SRC::TITLE).handleId_;
-
-	// 音
-	titleBgm_ = resMng_.Load(ResourceManager::SRC::TITLE_BGM).handleId_;
-	clickSe_ = resMng_.Load(ResourceManager::SRC::CLICK_SE).handleId_;
 
 	ChangeVolumeSoundMem(TITLE_BGM_VOL, titleBgm_);
 	ChangeVolumeSoundMem(CLICK_SE_VOL, clickSe_);
@@ -45,18 +53,8 @@ void TitleScene::Init(void)
 		particles_[i].alpha = PARTICLE_ALPHA_MIN + rand() % PARTICLE_ALPHA_VARIATION;
 	}
 
-	menuSelected_ = 0;
 	menuItems_[0] = "Start Game";
 	menuItems_[1] = "Exit";
-	menuEffectPhase_ = 0.0f;
-	isConfirmingTutorial_ = false;
-	confirmSelected_ = 0;
-	prevPOVDirection_ = -1;
-
-	// 選択背景のY座標を初期化（最初のメニュー項目の位置）
-	highlightPosY_ = INIT_MENU_HIGHLIGHT_Y;
-	confirmHighlightPosX_ = 0.0f;
-	confirmHighlightPosY_ = 0.0f;
 }
 
 void TitleScene::Update(void)
@@ -113,8 +111,8 @@ void TitleScene::Update(void)
 		SetFontSize(FONT_SIZE_CONFIRM);
 		const char* options[CONFIRM_OPTION_COUNT] = { "はい", "いいえ" };
 		int optionWidths[CONFIRM_OPTION_COUNT] = {
-			GetDrawStringWidth(options[0], strlen(options[0])),
-			GetDrawStringWidth(options[1], strlen(options[1]))
+			static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
+			static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
 		};
 		int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 		int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -161,8 +159,8 @@ void TitleScene::Update(void)
 				SetFontSize(FONT_SIZE_CONFIRM);
 				const char* options[MENU_ITEM_COUNT] = { "はい", "いいえ" };
 				int optionWidths[MENU_ITEM_COUNT] = {
-					GetDrawStringWidth(options[0], strlen(options[0])),
-					GetDrawStringWidth(options[1], strlen(options[1]))
+					static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
+					static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
 				};
 				int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 				int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -186,7 +184,7 @@ void TitleScene::Update(void)
 		SetFontSize(FONT_SIZE_MENU);
 		for (int i = 0; i < MENU_ITEM_COUNT; ++i) {
 			const char* text = menuItems_[i];
-			int textWidth = GetDrawStringWidth(text, strlen(text));
+			int textWidth = static_cast<int>(GetDrawStringWidth(text, strlen(text)));
 
 			int x = (Application::SCREEN_SIZE_X - textWidth) / 2;
 			int y = MENU_BASE_Y + i * MENU_ITEM_INTERVAL;
@@ -208,8 +206,8 @@ void TitleScene::Update(void)
 						SetFontSize(FONT_SIZE_CONFIRM);
 						const char* options[MENU_ITEM_COUNT] = { "はい", "いいえ" };
 						int optionWidths[MENU_ITEM_COUNT] = {
-							GetDrawStringWidth(options[0], strlen(options[0])),
-							GetDrawStringWidth(options[1], strlen(options[1]))
+							static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
+							static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
 						};
 						int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 						int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -221,7 +219,7 @@ void TitleScene::Update(void)
 						confirmHighlightPosX_ = (float)initX;
 						confirmHighlightPosY_ = (float)OPTION_Y_POS;
 
-						isConfirmingTutorial_ = true;  // ← これも最後に
+						isConfirmingTutorial_ = true;
 					}
 					else {
 						SceneManager::GetInstance().SetGameEnd(true);
@@ -261,15 +259,15 @@ void TitleScene::Draw(void)
 		const char* options[CONFIRM_OPTION_COUNT] = { "はい", "いいえ" };
 
 		SetFontSize(FONT_SIZE_CONFIRM);
-		int qWidth = GetDrawStringWidth(question, strlen(question));
+		int qWidth = static_cast<int>(GetDrawStringWidth(question, strlen(question)));
 		int qX = (Application::SCREEN_SIZE_X - qWidth) / 2;
 
 		DrawString(qX + SHADOW_OFFSET, CONFIRM_QUESTION_Y + SHADOW_OFFSET, question, GetColor(COLOR_TEXT_SHADOW_R, COLOR_TEXT_SHADOW_G, COLOR_TEXT_SHADOW_B));
 		DrawString(qX, CONFIRM_QUESTION_Y, question, GetColor(COLOR_TEXT_MAIN_R, COLOR_TEXT_MAIN_G, COLOR_TEXT_MAIN_B));
 
 		int optionWidths[CONFIRM_OPTION_COUNT] = {
-			GetDrawStringWidth(options[0], strlen(options[0])),
-			GetDrawStringWidth(options[1], strlen(options[1]))
+			static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
+			static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
 		};
 
 		int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
@@ -305,7 +303,7 @@ void TitleScene::Draw(void)
 	for (int i = 0; i < MENU_ITEM_COUNT; ++i)
 	{
 		const char* text = menuItems_[i];
-		int textWidth = GetDrawStringWidth(text, strlen(text));
+		int textWidth = static_cast<int>(GetDrawStringWidth(text, strlen(text)));
 		int x = (Application::SCREEN_SIZE_X - textWidth) / 2;
 		int y = MENU_BASE_Y + i * MENU_ITEM_INTERVAL;
 

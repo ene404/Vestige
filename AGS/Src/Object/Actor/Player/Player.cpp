@@ -22,66 +22,66 @@
 #include "Player.h"
 
 Player::Player(void)
+	:
+	animationController_(nullptr),
+	state_(STATE::NONE),
+	itemType_(ITEM_TYPE::HP_POTION),
+	speed_(0.0f),
+	moveDir_(AsoUtility::VECTOR_ZERO),
+	movePow_(AsoUtility::VECTOR_ZERO),
+	movedPos_(AsoUtility::VECTOR_ZERO),
+	isRun_(false),
+	playerRotY_(Quaternion()),
+	goalQuaRot_(Quaternion()),
+	stepRotTime_(0.0f),
+	jumpPow_(AsoUtility::VECTOR_ZERO),
+	isJump_(false),
+	stepJump_(0.0f),
+	attack_(0),
+	attackCnt_(0.0f),
+	attackCnt2_(0.0f),
+	isAttack2_(false),
+	attackCnt3_(0.0f),
+	isAttack3_(false),
+	strongAttackCnt_(0.0f),
+	stunCnt_(0.0f),
+	rollingCnt_(0.0f),
+	deadCnt_(0.0f),
+	gravHitPosDown_(AsoUtility::VECTOR_ZERO),
+	gravHitPosUp_(AsoUtility::VECTOR_ZERO),
+	capsule_(nullptr),
+	canAttack_(false),
+	currentHp_(MAX_HP),
+	displayHp_(currentHp_),
+	damageHp_(currentHp_),
+	healHp_(0),
+	stamina_(MAX_STAMINA),
+	ultFrameHandle_(resMng_.Load(ResourceManager::SRC::GAUGE_FRAME).handleId_),
+	magicCircleHandle_(resMng_.Load(ResourceManager::SRC::MAGIC_CIRCLE).handleId_),
+	runeHandle_(resMng_.Load(ResourceManager::SRC::RUNE).handleId_),
+	ultValue_(0.0f),
+	isUltActive_(false),
+	wasUltMaxed_(false),
+	flashTimer_(0),
+	id_(0),
+	lightningTimer_(0),
+	isLightning_(false),
+	attackSe_(resMng_.Load(ResourceManager::SRC::ATTACK_SE).handleId_),
+	hitSe_(resMng_.Load(ResourceManager::SRC::HIT_SE).handleId_),
+	rollingSe_(resMng_.Load(ResourceManager::SRC::ROLLING_SE).handleId_),
+	ultSe_(resMng_.Load(ResourceManager::SRC::ULT_SE).handleId_),
+	damageSe_(resMng_.Load(ResourceManager::SRC::DAMAGE_SE).handleId_),
+	wristIndex_(MV1SearchFrame(transform_.modelId, "mixamorig:RightHand")),
+	handIndex_(MV1SearchFrame(transform_.modelId, "mixamorig:RightHandMiddle1")),
+	weaponTopIndex_(WEAPON_TOP_INDEX),
+	weaponDownIndex_(WEAPON_DOWN_INDEX),
+	weaponTopPos_(MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_)),
+	weaponDownPos_(MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_)),
+	effectHitPlayId_(-1),
+	effectHitResId_(-1),
+	effectUltPlayId_(-1),
+	effectUltResId_(-1)
 {
-	animationController_ = nullptr;
-	state_ = STATE::NONE;
-	itemType_ = ITEM_TYPE::HP_POTION;
-
-	speed_ = 0.0f;
-	moveDir_ = AsoUtility::VECTOR_ZERO;
-	movePow_ = AsoUtility::VECTOR_ZERO;
-	movedPos_ = AsoUtility::VECTOR_ZERO;
-	isRun_ = false;
-
-	playerRotY_ = Quaternion();
-	goalQuaRot_ = Quaternion();
-	stepRotTime_ = 0.0f;
-
-	jumpPow_ = AsoUtility::VECTOR_ZERO;
-	isJump_ = false;
-	stepJump_ = 0.0f;
-
-	attack_ = 0;
-
-	attackCnt_ = 0.0f;
-	attackCnt2_ = 0.0f;
-	isAttack2_ = false;
-	attackCnt3_ = 0.0f;
-	isAttack3_ = false;
-
-	strongAttackCnt_ = 0.0f;
-
-	stunCnt_ = 0.0f;
-
-	rollingCnt_ = 0.0f;
-
-	deadCnt_ = 0.0f;
-
-	// 衝突チェック
-	gravHitPosDown_ = AsoUtility::VECTOR_ZERO;
-	gravHitPosUp_ = AsoUtility::VECTOR_ZERO;
-
-	imgShadow_ = -1;
-
-	capsule_ = nullptr;
-
-	canAttack_ = false;
-
-	currentHp_ = MAX_HP;
-	displayHp_ = currentHp_;
-	damageHp_ = currentHp_;
-	healHp_ = 0;
-	stamina_ = MAX_STAMINA;
-	ultFrameHandle_ = resMng_.Load(ResourceManager::SRC::GAUGE_FRAME).handleId_;
-	magicCircleHandle_ = resMng_.Load(ResourceManager::SRC::MAGIC_CIRCLE).handleId_;
-	runeHandle_ = resMng_.Load(ResourceManager::SRC::RUNE).handleId_;
-	ultValue_ = 0.0f;
-	isUltActive_ = false;
-	wasUltMaxed_ = false;
-	flashTimer_ = 0;
-	id_ = 0;
-	lightningTimer_ = 0;
-	isLightning_ = false;
 }
 
 Player::~Player(void)
@@ -91,20 +91,14 @@ Player::~Player(void)
 
 void Player::Init(void)
 {
-	// 音
-	attackSe_ = resMng_.Load(ResourceManager::SRC::ATTACK_SE).handleId_;
 	ChangeVolumeSoundMem(ATTACK_SE_VOL, attackSe_);
 
-	hitSe_ = resMng_.Load(ResourceManager::SRC::HIT_SE).handleId_;
 	ChangeVolumeSoundMem(HIT_SE_VOL, hitSe_);
 
-	rollingSe_ = resMng_.Load(ResourceManager::SRC::ROLLING_SE).handleId_;
 	ChangeVolumeSoundMem(ROLLING_SE_VOL, rollingSe_);
 
-	ultSe_ = resMng_.Load(ResourceManager::SRC::ULT_SE).handleId_;
 	ChangeVolumeSoundMem(ULT_SE_VOL, ultSe_);
 
-	damageSe_ = resMng_.Load(ResourceManager::SRC::DAMAGE_SE).handleId_;
 	ChangeVolumeSoundMem(DAMAGE_SE_VOL, damageSe_);
 
 	// モデルの基本設定
@@ -126,9 +120,6 @@ void Player::Init(void)
 	capsule_->SetLocalPosDown(INIT_DOWN_POS);
 	capsule_->SetRadius(PLAYER_RADIUS);
 
-	// 丸影画像
-	imgShadow_ = resMng_.Load(ResourceManager::SRC::PLAYER_SHADOW).handleId_;
-
 	weapon_ = std::make_shared<PlayerWeapon>();
 	weapon_->Init();
 
@@ -140,16 +131,6 @@ void Player::Init(void)
 
 	book_ = std::make_unique<Book>();
 	book_->Init();
-
-	// フレーム取得
-	wristIndex_ = MV1SearchFrame(transform_.modelId, "mixamorig:RightHand");
-	handIndex_ = MV1SearchFrame(transform_.modelId, "mixamorig:RightHandMiddle1");
-
-	weaponTopIndex_ = WEAPON_TOP_INDEX;
-	weaponDownIndex_ = WEAPON_DOWN_INDEX;
-
-	weaponTopPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_);
-	weaponDownPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_);
 
 	weaponTopPos_ = WeaponTopPos(INIT_WEAPON_TOP_POS);
 
@@ -1419,7 +1400,7 @@ bool Player::IsHitAttackEnemyScarecrow(void)
 	}
 }
 
-int Player::GetHp(void)
+float Player::GetHp(void)
 {
 	return currentHp_;
 }

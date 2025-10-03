@@ -2,6 +2,8 @@
 #include "HpPotion.h"
 
 HpPotion::HpPotion(void)
+    :
+    hpPotionSe_(resMng_.Load(ResourceManager::SRC::HP_POTION_SE).handleId_)
 {
 }
 
@@ -11,7 +13,6 @@ HpPotion::~HpPotion(void)
 
 void HpPotion::Init(void)
 {
-    hpPotionSe_ = resMng_.Load(ResourceManager::SRC::HP_POTION_SE).handleId_;
     ChangeVolumeSoundMem(220, hpPotionSe_);
 
     itemImg_ = resMng_.Load(ResourceManager::SRC::HP_POTION).handleId_;
@@ -49,7 +50,7 @@ void HpPotion::Draw(void)
     // u‰ñ•œ–òv‚Ìƒ‰ƒxƒ‹‚Æ”wŒi
     SetFontSize(18);
     const char* label = "‰ñ•œ–ò";
-    int textWidth = GetDrawStringWidth(label, strlen(label));
+    int textWidth = static_cast<int>(GetDrawStringWidth(label, strlen(label)));
     int textX = 100 - textWidth / 2;
     int textY = 590;
     int paddingX = 10;

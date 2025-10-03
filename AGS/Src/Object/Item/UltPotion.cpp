@@ -2,6 +2,8 @@
 #include "UltPotion.h"
 
 UltPotion::UltPotion(void)
+    :
+    ultPotionSe_(resMng_.Load(ResourceManager::SRC::ULT_POTION_SE).handleId_)
 {
 }
 
@@ -11,7 +13,6 @@ UltPotion::~UltPotion(void)
 
 void UltPotion::Init(void)
 {
-    ultPotionSe_ = resMng_.Load(ResourceManager::SRC::ULT_POTION_SE).handleId_;
     ChangeVolumeSoundMem(220, ultPotionSe_);
 
     itemImg_ = resMng_.Load(ResourceManager::SRC::ULT_POTION).handleId_;
@@ -49,7 +50,7 @@ void UltPotion::Draw(void)
     // ÅuïKéEñÚÅvÇÃÉâÉxÉãÇ∆îwåi
     SetFontSize(18);
     const char* label = "ïKéEñÚ";
-    int textWidth = GetDrawStringWidth(label, strlen(label));
+    int textWidth = static_cast<int>(GetDrawStringWidth(label, strlen(label)));
     int textX = 100 - textWidth / 2;
     int textY = 590;
     int paddingX = 10;

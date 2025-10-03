@@ -22,8 +22,6 @@ public:
 	static constexpr int PARTICLE_ALPHA_MIN = 100;			// パーティクルの最小透明度
 	static constexpr int PARTICLE_ALPHA_VARIATION = 100;	// パーティクル透明度のばらつき幅
 
-	static constexpr float PHASE_INCREMENT = 0.05f;			// アニメーション位相の進行度
-
 	static constexpr float OVER_IMAGE_SCALE = 0.7f;			// 「GAME OVER」画像の表示スケール倍率
 	static constexpr int HINT_FONT_SIZE = 32;				// ヒントテキストのフォントサイズ
 	static constexpr int HINT_Y = 480;						// ヒントテキストの表示位置
@@ -63,7 +61,6 @@ private:
 
 	int imgOver_;	// 画像
 
-	float phase_;    // サイン波的なエフェクトや点滅制御に使う位相値
 
 	struct Particle {
 		float x, y;   // 位置座標
