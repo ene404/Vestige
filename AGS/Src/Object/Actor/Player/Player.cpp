@@ -131,7 +131,8 @@ void Player::Init(void)
 
 	book_ = std::make_unique<Book>();
 	book_->Init();
-
+	weaponTopPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_);
+	weaponDownPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_);
 	weaponTopPos_ = WeaponTopPos(INIT_WEAPON_TOP_POS);
 
 	UpdateRightWeapon();
