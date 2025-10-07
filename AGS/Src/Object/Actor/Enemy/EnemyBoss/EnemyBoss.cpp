@@ -394,7 +394,7 @@ void EnemyBoss::Draw(void)
 
 	// デバックのみ
 #ifdef _DEBUG
-	DrawDebug();
+	//DrawDebug();
 #endif // DEBUG
 
 }
