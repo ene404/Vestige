@@ -21,33 +21,38 @@
 #include "GameScene.h"
 
 GameScene::GameScene(void)
+	:
+	gameBgm_(resMng_.Load(ResourceManager::SRC::GAME_BGM).handleId_),
+	bgmVol_(160),
+	isBgm_(true),
+	deadSe_(resMng_.Load(ResourceManager::SRC::DEAD_SE).handleId_),
+	helpSe_(resMng_.Load(ResourceManager::SRC::HELP_SE).handleId_),
+	deathFadeAlpha_(0),
+	youDiedTimer_(0),
+	enemySlainFadeAlpha_(0),
+	enemySlainTimer_(0),
+	enemySlain_(false),
+	isHelp_(false),
+	helpBackImage_(-1),
+	wasHelp_(false),
+	postEffectScreen_(MakeScreen(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true)),
+	lowHpVisionMaterial_(std::make_unique<PixelMaterial>("LowHpVision.cso", VISION_CONST_BUF_FLOAT4_SIZE)),
+	lightningMaterial_(std::make_unique<PixelMaterial>("Lightning.cso", LIGHTNING_CONST_BUF_FLOAT4_SIZE)),
+	lightningTime_(-1),
+	lightningPower_(0.0f)
 {
-	player_ = nullptr;
-	skyDome_ = nullptr;
-	stage_ = nullptr;
 }
 
 GameScene::~GameScene(void)
 {
-	if (helpBackImage_ != -1)
-	{
-		DeleteGraph(helpBackImage_);
-		helpBackImage_ = -1;
-	}
 }
 
 void GameScene::Init(void)
 {
-	// 音
-	gameBgm_ = resMng_.Load(ResourceManager::SRC::GAME_BGM).handleId_;
-	bgmVol_ = 160;
 	ChangeVolumeSoundMem(bgmVol_, gameBgm_);
-	isBgm_ = true;
 
-	deadSe_ = resMng_.Load(ResourceManager::SRC::DEAD_SE).handleId_;
 	ChangeVolumeSoundMem(255, deadSe_);
 
-	helpSe_ = resMng_.Load(ResourceManager::SRC::HELP_SE).handleId_;
 	ChangeVolumeSoundMem(220, helpSe_);
 
 	ChangeFont("MS ゴシック");
@@ -89,24 +94,6 @@ void GameScene::Init(void)
 	player_->SetMist(mist_);
 	enemyBoss_->SetMist(mist_);
 
-	deathFadeAlpha_ = 0;
-	youDiedTimer_ = 0;
-
-	enemySlainFadeAlpha_ = 0;
-	enemySlainTimer_ = 0;
-	enemySlain_ = false;
-
-	isHelp_ = false;
-	helpBackImage_ = -1;
-	wasHelp_ = false;
-
-	// ポストエフェクト用スクリーン
-	postEffectScreen_ = MakeScreen(
-		Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true);
-
-	// ポストエフェクト用(プレイヤーの視界)
-	lowHpVisionMaterial_ = std::make_unique<PixelMaterial>("LowHpVision.cso", 2);
-
 	lowHpVisionMaterial_->AddConstBuf({ 1.0f, 1.0f, 1.0f, 1.0f });
 
 	float hpRate = static_cast<float>(player_->GetHp()) / static_cast<float>(Player::MAX_HP);
@@ -119,7 +106,6 @@ void GameScene::Init(void)
 		Vector2(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y)
 	);
 
-	// ポストエフェクト用(ライトニング)
 	lightningMaterial_ = std::make_unique<PixelMaterial>("Lightning.cso", 1);
 
 	lightningTime_ = GetNowCount() / 1000.0f;
@@ -358,14 +344,14 @@ void GameScene::DrawUI(void)
 		int x = (screenW - msgW) / 2;
 		int y = (screenH - msgH) / 2;
 
-		// 背景の黒ボックス
+		// 背景
 		int padding = 10;
 		DrawBox(0, y - padding, screenW, y + msgH + padding, GetColor(0, 0, 0), TRUE);
 
-		// 影付き文字（金色）
+		// 影付き文字
 		int shadowOffset = 5;
-		DrawString(x + shadowOffset, y + shadowOffset, msg, GetColor(0, 0, 0)); // 影
-		DrawString(x, y, msg, GetColor(255, 215, 0)); // 本体（金）
+		DrawString(x + shadowOffset, y + shadowOffset, msg, GetColor(0, 0, 0));
+		DrawString(x, y, msg, GetColor(255, 215, 0));
 
 		SetFontSize(16);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -379,7 +365,7 @@ void GameScene::DrawUI(void)
 		DrawBox(0, 0, 1024, 640, GetColor(0, 0, 0), TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-		// 「YOU DIED」の文字をフェードイン表示（影付き）
+		// 「YOU DIED」の文字をフェードイン表示
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, deathFadeAlpha_);
 
 		int screenW = Application::SCREEN_SIZE_X;
@@ -396,7 +382,7 @@ void GameScene::DrawUI(void)
 		int x = (screenW - msgW) / 2;
 		int y = (screenH - msgH) / 2;
 
-		// === 背後の黒ボックス（オプション） ===
+		// === 背後===
 		int padding = 10;
 		DrawBox(
 			0,
@@ -438,9 +424,9 @@ void GameScene::DrawUI(void)
 
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, blinkAlpha);
 
-			// 影（黒）
+			// 影
 			DrawString(rx + 2, ry + 2, retryMsg, GetColor(0, 0, 0));
-			// 本体（白→赤へグラデーション）
+			// 本体
 			DrawString(rx, ry, retryMsg, GetColor(255, 255, 255));
 
 			// 「自動遷移まで残りX秒」のメッセージを描画
@@ -449,7 +435,6 @@ void GameScene::DrawUI(void)
 
 			int autoTransitionTimeSec = 10;
 
-			// 切り上げでしっかり「10秒後」からカウントダウンする
 			int remaining = (660 - youDiedTimer_ + 59) / 60;
 			if (remaining < 0)
 			{
@@ -475,7 +460,6 @@ void GameScene::DrawUI(void)
 	// ヘルプ
 	if (isHelp_ && helpBackImage_ != -1)
 	{
-		// 背景のキャプチャを描画
 		DrawGraph(0, 0, helpBackImage_, false);
 		DrawHelp();
 	}

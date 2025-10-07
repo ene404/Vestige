@@ -396,14 +396,11 @@ private:
 
 	bool canAttack_;					// 攻撃可能かどうか
 
-	// 武器のボーンインデックス
-	int weaponBoneIndex_;
-
 	int wristIndex_;					// 手首のフレーム
-	VECTOR wristPos;					// 手首座標
+	VECTOR wristPos_;					// 手首座標
 
 	int handIndex_;						// 手のフレーム
-	VECTOR handPos;						// 手座標
+	VECTOR handPos_;						// 手座標
 
 
 	int weaponTopIndex_;				// 武器のトップ

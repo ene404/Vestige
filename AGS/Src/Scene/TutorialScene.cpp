@@ -43,7 +43,7 @@ TutorialScene::TutorialScene(void)
 	helpBackImage_(-1),
 	wasHelp_(false),
 	postEffectScreen_(MakeScreen(Application::SCREEN_SIZE_X, Application::SCREEN_SIZE_Y, true)),
-	lightningMaterial_(std::make_unique<PixelMaterial>("Lightning.cso", 1)),
+	lightningMaterial_(std::make_unique<PixelMaterial>("Lightning.cso", CONST_BUF_FLOAT4_SIZE)),
 	lightningTime_(GetNowCount() / MILLISECONDS_TO_SECONDS),
 	lightningPower_(0.0f)
 

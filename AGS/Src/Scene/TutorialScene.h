@@ -103,6 +103,8 @@ public:
 	static constexpr int COLOR_COLOR_BLACK_G = 0;		// 黒色G
 	static constexpr int COLOR_COLOR_BLACK_B = 0;		// 黒色B
 
+	static constexpr int CONST_BUF_FLOAT4_SIZE = 1;		// 定数バッファの確保サイズ
+
 	enum class TutorialStep {
 		LOOK,			// 視点操作
 		MOVE,			// 移動操作
