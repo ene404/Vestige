@@ -87,8 +87,6 @@ public:
 
 private:
 
-	// 音
-	int lockonSe_;
 
 	// シングルトン参照
 	ResourceManager& resMng_;
@@ -121,8 +119,13 @@ private:
 	// カメラの上方向
 	VECTOR cameraUp_;
 
+	// ロックオンフレーム
 	int lockonFrame_;
 
+	// 音
+	int lockonSe_;
+
+	// カメラの初期化を行うかどうか
 	bool isInitialized_;
 
 	// カメラを初期位置に戻す

@@ -21,6 +21,11 @@ public:
 	static constexpr int BAR_MAX_WIDTH = 200;				// プログレスバーの最大幅
 	static constexpr int BAR_X_ADJUSTMOMENT = 220;			// プログレスバーのX位置調整
 	static constexpr int BAR_Y_ADJUSTMOMENT = 32;			// プログレスバーのY位置調整
+	static constexpr int PROGRESS_COL_R = 125;				// プログレスバーのレッドの値
+	static constexpr int PROGRESS_COL_G = 252;				// プログレスバーのグリーンの値
+	static constexpr int PROGRESS_COL_B = 0;				// プログレスバーのブルーの値
+
+
 
 	static constexpr int FONT_MARGIN_RIGHT = 30;			// フォントの右余白
 	static constexpr int FONT_MARGIN_UNDER = 64;			// フォントの下余白
@@ -114,13 +119,14 @@ private:
 	// 敵
 	std::shared_ptr<EventEnemy> enemy_;
 
+	// 状態の名前取得用(デバック用)
 	std::string GetStateName(STATE state);
 
 	// 長押し関連
 	bool isLongPressing = false;
-	int longPressStartTime; // 長押し開始時刻 (DxLibのGetNowCount()で取得)
+	int longPressStartTime_; // 長押し開始時刻 (DxLibのGetNowCount()で取得)
 
-	bool isInitialized_;
+	bool isInitialized_;	// 初期化されるかどうか
 
 	// プログレスバーUIの色
 	int progressColor; // 緑
@@ -133,9 +139,9 @@ private:
 	void InitSound(void);
 
 	// サウンドハンドル
-	int bgmSHandle_;
-	int iKeySHandle_;
-	int cMaxSHandle_;
+	int bgmSHandle_;			// メインサウンド
+	int iKeySHandle_;			// 何かボタンが押されたときのサウンド
+	int cMaxSHandle_;			// カウントがマックス値になったときのサウンド
 
 	// 毎フレーム音を生成させないため
 	bool isBgm_;

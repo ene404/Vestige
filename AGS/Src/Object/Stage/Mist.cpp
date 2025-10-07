@@ -8,6 +8,8 @@
 #include "Mist.h"
 
 Mist::Mist(void)
+	:
+	time_(0.0f)
 {
 }
 

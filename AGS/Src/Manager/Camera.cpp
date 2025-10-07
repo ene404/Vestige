@@ -13,21 +13,21 @@
 #include "../Object/Actor/Player/EventPlayer.h"
 #include "Camera.h"
 
-Camera::Camera(void) : resMng_(ResourceManager::GetInstance())
+Camera::Camera(void) 
+	:
+	resMng_(ResourceManager::GetInstance()),
+	angles_({}),
+	cameraUp_({}),
+	mode_({}),
+	gameCamera_(GAME_CAMERA::NONE),
+	pos_({}),
+	targetPos_({}),
+	lockonFrame_(0),
+	followTransform_(nullptr),
+	followEnemyTransform_(nullptr),
+	lockonSe_(-1),
+	isInitialized_(false)
 {
-	angles_ = VECTOR();
-	cameraUp_ = VECTOR();
-	mode_ = MODE::NONE;
-	gameCamera_ = GAME_CAMERA::NONE;
-	pos_ = AsoUtility::VECTOR_ZERO;
-	targetPos_ = AsoUtility::VECTOR_ZERO;
-	lockonFrame_ = 0;
-	followTransform_ = nullptr;
-	followEnemyTransform_ = nullptr;
-	lockonFrame_ = 0;
-	lockonSe_ = -1;
-	isInitialized_ = false;
-
 }
 
 Camera::~Camera(void)

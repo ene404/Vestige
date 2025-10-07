@@ -13,10 +13,13 @@
 #include "Stage.h"
 
 Stage::Stage(Player& player, EnemyBoss& enemyBoss)
-	: resMng_(ResourceManager::GetInstance()), player_(player), enemyBoss_(enemyBoss)
+	:
+	resMng_(ResourceManager::GetInstance()),
+	player_(player),
+	enemyBoss_(enemyBoss),
+	activeName_(NAME::MAIN_PLANET),
+	step_(0.0f)
 {
-	activeName_ = NAME::MAIN_PLANET;
-	step_ = 0.0f;
 }
 
 Stage::~Stage(void)

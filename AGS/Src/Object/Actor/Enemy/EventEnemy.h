@@ -14,7 +14,6 @@ class EventEnemy
 
 public:
 
-	// 初期座標
 	static constexpr VECTOR INIT_POS = { 0.0f, 200.0f, 900.0f };			// 初期座標
 
 	// カプセル関連
@@ -25,7 +24,7 @@ public:
 	// 武器関連
 	static constexpr int WEAPON_TOP_INDEX = 3;								// 武器の先端のフレームインデックス
 	static constexpr int WEAPON_DOWN_INDEX = 6;								// 武器の下端のフレームインデックス
-	static constexpr VECTOR WEAPON_TOP_POS = { 0.0f, 0.0f, -100.0f };				// 武器の先端のローカル座標
+	static constexpr VECTOR WEAPON_TOP_POS = { 0.0f, 0.0f, -100.0f };		// 武器の先端のローカル座標
 	static constexpr float WEAPON_ROLL = 0.0f;								// 武器の回転
 	static constexpr float WEAPON_FORWARD_OFFSET = -5.0f;					// 武器の前方向へのオフセット
 	static constexpr float WEAPON_UP_OFFSET = -20.0f;						// 武器の上方向へのオフセット

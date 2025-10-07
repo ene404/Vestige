@@ -12,29 +12,34 @@
 #include "EventPlayer.h"
 
 EventPlayer::EventPlayer()
+	:
+	animationController_(nullptr),
+	state_(STATE::NONE),
+	anim_(ANIM_TYPE::NONE),
+	speed_(0.0f),
+	moveDir_({}),
+	movePow_({}),
+	movedPos_({}),
+	playerRotY_({}),
+	goalQuaRot_({}),
+	stepRotTime_(0.0f),
+	jumpPow_({}),
+	isJump_(false),
+	capsule_(nullptr),
+	gravHitPosDown_({}),
+	gravHitPosUp_({}),
+	weaponBoneIndex_(-1),
+	wristIndex_(-1),
+	wristPos({}),
+	handIndex_(-1),
+	handPos({}),
+	weaponTopIndex_(-1),
+	weaponTopPos_({}),
+	weaponDownIndex_(-1),
+	weaponDownPos_({}),
+	sHandle_(-1),
+	isSound_(false)
 {
-	animationController_ = nullptr;
-	state_ = STATE::NONE;
-	anim_ = ANIM_TYPE::NONE;
-
-	speed_ = 0.0f;
-	moveDir_ = AsoUtility::VECTOR_ZERO;
-	movePow_ = AsoUtility::VECTOR_ZERO;
-	movedPos_ = AsoUtility::VECTOR_ZERO;
-
-	playerRotY_ = Quaternion();
-	goalQuaRot_ = Quaternion();
-	stepRotTime_ = 0.0f;
-
-	jumpPow_ = AsoUtility::VECTOR_ZERO;
-	isJump_ = false;
-
-	// 衝突チェック
-	gravHitPosDown_ = AsoUtility::VECTOR_ZERO;
-	gravHitPosUp_ = AsoUtility::VECTOR_ZERO;
-
-	capsule_ = nullptr;
-
 }
 
 EventPlayer::~EventPlayer()
@@ -85,8 +90,6 @@ void EventPlayer::Init(void)
 
 	weaponTopPos_ = WeaponTopPos(WEAPON_TOP_POS);
 
-	weaponDownPos_ = WeaponDownPos(WEAPON_DOWN_POS);
-
 	UpdateRightWeapon();
 	UpdateWeapon();
 
@@ -128,7 +131,6 @@ void EventPlayer::Update(void)
 
 	UpdateRightWeapon();
 	UpdateWeapon();
-
 
 }
 

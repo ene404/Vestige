@@ -12,10 +12,13 @@
 #include "EventStage.h"
 
 EventStage::EventStage(EventPlayer& player, EventEnemy& enemy)
-    :resMng_(ResourceManager::GetInstance()), player_(player),enemy_(enemy)
+    :
+    resMng_(ResourceManager::GetInstance()), 
+    player_(player),
+    enemy_(enemy),
+    activeName_(NAME::MAIN_PLANET),
+    step_(0.0f)
 {
-    activeName_ = NAME::MAIN_PLANET;
-    step_ = 0.0f;
 }
 
 EventStage::~EventStage(void)

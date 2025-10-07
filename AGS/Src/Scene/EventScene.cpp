@@ -17,14 +17,20 @@
 
 
 EventScene::EventScene(void)
+	:
+	currentState_(STATE::START),
+	stateTimer_(0.0f),
+	isLongPressing(false),
+	longPressStartTime_(-1),
+	isInitialized_(false),
+	progressColor(-1),
+	customFontHandle_(-1),
+	bgmSHandle_(-1),
+	iKeySHandle_(-1),
+	cMaxSHandle_(-1),
+	isBgm_(false),
+	isStateFrame_(false)
 {
-	
-	currentState_ = STATE::START;
-	stateTimer_ = 0.0f;
-	longPressStartTime = 0;
-	isLongPressing = false;
-	customFontHandle_ = -1;
-	isStateFrame_ = false;
 }
 
 EventScene::~EventScene(void)
@@ -69,17 +75,18 @@ void EventScene::Init(void)
 	if (customFontHandle_ == -1) {
 		return;
 	}
+
+	// フォントの変更
 	ChangeFont("Garamond");
 
 	// カメラの設定
 	SceneManager::GetInstance().GetCamera()->ChangeMode(Camera::MODE::EVENT);
-
 	SceneManager::GetInstance().GetCamera()->ResetEventCameraState();
 
 	currentState_ = STATE::START;
 	isLongPressing = false;
-	longPressStartTime = 0; // 長押し開始時刻を初期化
-	progressColor = GetColor(125, 252, 0);
+	longPressStartTime_ = 0; // 長押し開始時刻を初期化
+	progressColor = GetColor(PROGRESS_COL_R, PROGRESS_COL_G, PROGRESS_COL_B);
 }
 
 void EventScene::Update(void)
@@ -104,7 +111,7 @@ void EventScene::Update(void)
 		{
 			// 長押し開始
 			isLongPressing = true;
-			longPressStartTime = GetNowCount();
+			longPressStartTime_ = GetNowCount();
 			PlaySoundMem(iKeySHandle_, DX_PLAYTYPE_LOOP, true);
 		}
 	}
@@ -114,13 +121,13 @@ void EventScene::Update(void)
 		// 長押し中断
 		StopSoundMem(iKeySHandle_);
 		isLongPressing = false;
-		longPressStartTime = 0; // リセット
+		longPressStartTime_ = 0; // リセット
 	}
 
 	if (isLongPressing) 
 	{
 		int currentTime = GetNowCount();
-		int elapsedTime = currentTime - longPressStartTime;
+		int elapsedTime = currentTime - longPressStartTime_;
 
 		// 長押し完了判定
 		if (elapsedTime >= LONG_PRESS_DURATION_MS) 
@@ -216,7 +223,7 @@ void EventScene::Draw(void)
 
 	// プログレスバーの描画
 	// キーが押されていなくてもプログレスバーの描画関数を呼び出す
-	int elapsedTime = isLongPressing ? (GetNowCount() - longPressStartTime) : 0;
+	int elapsedTime = isLongPressing ? (GetNowCount() - longPressStartTime_) : 0;
 	DrawProgressBar(elapsedTime, LONG_PRESS_DURATION_MS);
 
 	// ボタンメッセージの描画
