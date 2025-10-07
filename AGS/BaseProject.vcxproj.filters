@@ -510,11 +510,7 @@
   <ItemGroup>
     <FxCompile Include="Src\Shader\PostEffect\LowHpVision.hlsl" />
     <FxCompile Include="Src\Shader\PostEffect\Lightning.hlsl" />
-    <FxCompile Include="Src\Shader\PostEffect\PERoarPS.hlsl" />
     <FxCompile Include="Src\Shader\Model\GateFogPS.hlsl" />
     <FxCompile Include="Src\Shader\Model\GateFogVS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\SkinMeshDepthShadowVS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\DepthShadowPS.hlsl" />
-    <FxCompile Include="Src\Shader\Model\NormalMeshDepthShadowVS.hlsl" />
   </ItemGroup>
 </Project>

@@ -48,6 +48,7 @@ TutorialScene::TutorialScene(void)
 	lightningPower_(0.0f)
 
 {
+
 }
 
 TutorialScene::~TutorialScene(void)

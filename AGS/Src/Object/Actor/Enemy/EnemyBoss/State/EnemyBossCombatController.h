@@ -14,10 +14,10 @@ class EnemyBossCombatController
 
 public:
 
-    const float COMBO_THRUST_VIEW_ANGLE_DEG = 30.0f; // 正面から左右30度（合計60度）
-    const float COMBO_THRUST_MAX_DISTANCE = 600.0f; // この距離内でのみ視野判定を行う
-    static constexpr float HP_RATIO_HALF = 0.5f;
-    static constexpr float HP_RATIO_0_4 = 0.4f;
+    const float COMBO_THRUST_VIEW_ANGLE_DEG = 30.0f;    // 正面から左右30度（合計60度）
+    const float COMBO_THRUST_MAX_DISTANCE = 600.0f;     // この距離内でのみ視野判定を行う
+    static constexpr float HP_RATIO_HALF = 0.5f;        // HPの半分の割合い
+    static constexpr float HP_RATIO_0_4 = 0.4f;         // HPの４分の一の割合
 
     EnemyBossCombatController(EnemyBoss& boss);
 
@@ -55,10 +55,10 @@ public:
     int GetTotalContinuousAttackCount() const;
 
 private:
-    EnemyBoss& boss_;
+    EnemyBoss& boss_;                                           //　ボス
 
-    // 各攻撃ごとのクールダウン
-    std::map<EnemyBoss::ATK_STATE, float> attackCooldowns_;
+   
+    std::map<EnemyBoss::ATK_STATE, float> attackCooldowns_;     // 各攻撃ごとのクールダウン
 
     // 各攻撃のクールダウン時間 (設定値)
     const std::map<EnemyBoss::ATK_STATE, float> ATTACK_COOLDOWN_TIMES = {
@@ -80,6 +80,6 @@ private:
 
     // 連続攻撃のために内部処理
     std::vector<EnemyBoss::ATK_STATE> currentAttackSeries_; // 現在の連続攻撃シリーズ
-    int currentSeriesIndex_ = 0;
+    int currentSeriesIndex_ = 0;                            // 現在の攻撃シリーズの番号
 };
 

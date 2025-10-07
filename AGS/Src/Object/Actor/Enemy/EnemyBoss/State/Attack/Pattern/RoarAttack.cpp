@@ -35,7 +35,7 @@ void RoarAttack::Enter(EnemyBoss& boss)
     waveTimer_ = 0.0f;
     waveAtMax_ = false;
     IsEffect_ = false;
-    soundPlayed_ = false;
+    isSoundPlayed_ = false;
     boss.GetAnimation()->Play(EnemyBossAnimation::ANIM_TYPE::ROAR, false, EnemyBoss::ANIM_BLEND_RATE);
 }
 
@@ -55,12 +55,12 @@ void RoarAttack::Update(EnemyBoss& boss)
         IsEffect_ = true;
     }
 
-	if (!soundPlayed_ && timer_ >= SOUND_START_TIME)
+	if (!isSoundPlayed_ && timer_ >= SOUND_START_TIME)
 	{
-		if (soundRoar_ != -1)
+		if (noHitSound_ != -1)
 		{
-			PlaySoundMem(soundRoar_, DX_PLAYTYPE_BACK, true);
-			soundPlayed_ = true;
+			PlaySoundMem(noHitSound_, DX_PLAYTYPE_BACK, true);
+            isSoundPlayed_ = true;
 		}
 	}
 
@@ -107,7 +107,7 @@ void RoarAttack::Update(EnemyBoss& boss)
         timer_ = 0.0f;
         waveTimer_ = 0.0f;
         waveAtMax_ = false;
-        soundPlayed_ = false;
+        isSoundPlayed_ = false;
         IsEffect_ = false;
         isFinished_ = true;
     }
@@ -167,8 +167,8 @@ void RoarAttack::UpdateEffect(EnemyBoss& boss)
 
 void RoarAttack::InitSound(void)
 {
-    soundRoar_ = ResourceManager::GetInstance().Load(
+    noHitSound_ = ResourceManager::GetInstance().Load(
         ResourceManager::SRC::ROAR_SE).handleId_;
 
-    ChangeVolumeSoundMem(SOUND_VALUE, soundRoar_);
+    ChangeVolumeSoundMem(SOUND_VALUE, noHitSound_);
 }

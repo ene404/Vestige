@@ -9,72 +9,23 @@ class Camera
 
 public:
 
-	// カメラスピード(度)
-	static constexpr float SPEED = 1.0f;
-
-	// カメラクリップ：NEAR
-	static constexpr float CAMERA_NEAR = 10.0f;
-
-	// カメラクリップ：NEAR
-	static constexpr float CAMERA_FAR = 30000.0f;
-
-	// カメラの初期座標
-	static constexpr VECTOR DEFAULT_CAMERA_POS = { 0.0f, 100.0f, -500.0f };
-
-	// 追従位置からカメラ位置までの相対座標
-	static constexpr VECTOR LOCAL_F2C_POS = { 0.0f, 50.0f, -400.0f };
-
-	// 追従位置から注視点までの相対座標
-	static constexpr VECTOR LOCAL_F2T_POS = { 0.0f, 0.0f, 500.0f };
-
-	// カメラのX回転上限度角
-	static constexpr float LIMIT_X_UP_RAD = 40.0f * (DX_PI_F / 180.0f);
-	static constexpr float LIMIT_X_DW_RAD = 15.0f * (DX_PI_F / 180.0f);
-
-	// カメラ位置から注視点までの相対座標
-	static constexpr VECTOR RELATIVE_C2T_POS = { 0.0f, -100.0f, 220.0f };
-
-	// 追従対象からカメラ位置までの相対座標(完全追従)
-	static constexpr VECTOR RELATIVE_F2C_POS_FOLLOW = { 0.0f, 280.0f, -350.0f };
-
-	// パットの時のカメラの制限
-	static constexpr float PAT_CAMERA_MAX_RX = 100.0f;
-	static constexpr float PAT_CAMERA_MIN_RX = -100.0f;
-	static constexpr float PAT_CAMERA_MAX_RY = 100.0f;
-	static constexpr float PAT_CAMERA_MIN_RY = -100.0f;
-
-	// カメラアングルの制限
-	static constexpr float CAMERA_MAX_ANGLE_X = 60.0f;
-	static constexpr float CAMERA_MIN_ANGLE_X = -60.0f;
-
-
-	// イベントシーン用カメラ関連
-	static constexpr VECTOR EVENT_CAMERA_POS = { -50.0f, -60.0f, 260.0f };
-	static constexpr VECTOR EVENT_TARGET_POS = { 0.0f, 80.0f, 0.0f };
-
-	static constexpr VECTOR EVENT_START_CAMERA_POS = { -50.0f, -60.0f, 260.0f };
-	static constexpr VECTOR EVENT_START_TARGET_POS = { 0.0f, 80.0f, 0.0f };
-
-	static constexpr VECTOR EVENT_STEP_CAMERA_POS = { -50.0f, 30.0f, 500.0f };
-	static constexpr VECTOR EVENT_STEP_TARGET_POS = { -100.0f, 30.0f, 200.0f };
-
-	static constexpr float EVENT_LOOK_CAMER_POS_X = 50.0f;
-	static constexpr float EVENT_LOOK_CAMER_POS_Y = 120.0f;
-	static constexpr float EVENT_LOOK_CAMER_POS_Z = 300.0f;
-	static constexpr VECTOR EVENT_LOOK_TARGET_POS = { 20.0f, 50.0f, 0.0f };
-
-	static constexpr VECTOR EVENT_PAN_CAMERA_START_POS = { 0.0f, 80.0f, 0.0f };
-	static constexpr VECTOR EVENT_PAN_CAMERA_END_POS = { 0.0f, 50.0f, 300.0f };
-	static constexpr VECTOR EVENT_PAN_ENEMY_POS = { 0.0f, 100.0f, 0.0f };
-
-
-	static constexpr float EVENT_ROAR_CAMERA_POS_X = -30.0f;
-	static constexpr float EVENT_ROAR_CAMERA_POS_Y = 25.0f;
-	static constexpr float EVENT_ROAR_TIME_ADJUSTMOMENT = 40.0f;
-	static constexpr float EVENT_ROAR_CAMERA_POS_Z = -200.0f;
-	static constexpr VECTOR EVENT_ROAR_ENEMY_POS = { 0.0f, 80.0f, 0.0f };
-
-	// カメラモード
+	
+	static constexpr float SPEED = 1.0f;										// カメラスピード(度)
+	static constexpr float CAMERA_NEAR = 10.0f;									// カメラクリップ：NEAR
+	static constexpr float CAMERA_FAR = 30000.0f;								// カメラクリップ：FAR	
+	static constexpr VECTOR DEFAULT_CAMERA_POS = { 0.0f, 100.0f, -500.0f };		// カメラの初期座標
+	static constexpr VECTOR LOCAL_F2C_POS = { 0.0f, 50.0f, -400.0f };			// 追従位置からカメラ位置までの相対座標
+	static constexpr VECTOR LOCAL_F2T_POS = { 0.0f, 0.0f, 500.0f };				// 追従位置から注視点までの相対座標	
+	static constexpr float LIMIT_X_UP_RAD = 40.0f * (DX_PI_F / 180.0f);			// カメラのX回転上限度角
+	static constexpr float LIMIT_X_DW_RAD = 15.0f * (DX_PI_F / 180.0f);			// カメラのX回転下限度角
+	static constexpr VECTOR RELATIVE_C2T_POS = { 0.0f, -100.0f, 220.0f };		// カメラ位置から注視点までの相対座標
+	static constexpr VECTOR RELATIVE_F2C_POS_FOLLOW = { 0.0f, 280.0f, -350.0f };// 追従位置からカメラ位置までの相対座標(追従モード)
+	static constexpr float PAT_CAMERA_MAX_RX = 100.0f;							// パットの時のカメラの制限(x上限)
+	static constexpr float PAT_CAMERA_MIN_RX = -100.0f;							// パットの時のカメラの制限(x下限)
+	static constexpr float PAT_CAMERA_MAX_RY = 100.0f;							// パットの時のカメラの制限(y上限)
+	static constexpr float PAT_CAMERA_MIN_RY = -100.0f;							// パットの時のカメラの制限(y下限)
+	static constexpr float CAMERA_MAX_ANGLE_X = 60.0f;							// カメラのX回転上限度角	
+	static constexpr float CAMERA_MIN_ANGLE_X = -60.0f;							// カメラのX回転下限度角
 
 	// カメラモード
 	enum class MODE
@@ -124,12 +75,14 @@ public:
 	void SetFollow(const Transform* follow);
 	void SetFollowEnemy(const Transform* followEnemy);
 
+	// マウス移動
 	void MouseMove(float* x_m, float* y_m, const float fov_per);
 
 	// ロックオンマーカー
 	void DrawLockonMarker(void);
 	void LockonSoundLoad(void);
 
+	// イベントカメラの状態をリセット
 	void ResetEventCameraState(void);
 
 private:

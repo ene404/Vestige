@@ -36,7 +36,7 @@ void ExplosionAttack::Enter(EnemyBoss& boss)
     targetPosionFixed_ = false;
     reachedTargetPos_ = false;
     IsEffect_ = false;
-	soundPlayed_ = false;
+    isSoundPlayed_ = false;
     hasSelfStunned_ = false;
 }
 
@@ -72,12 +72,12 @@ void ExplosionAttack::Update(EnemyBoss& boss)
         IsEffect_ = true;
     }
 
-    if (!soundPlayed_ && timer_ >= SOUND_START_TIME)
+    if (!isSoundPlayed_ && timer_ >= SOUND_START_TIME)
     {
-        if (soundExplosion_ != -1)
+        if (noHitSound_ != -1)
         {
-            PlaySoundMem(soundExplosion_, DX_PLAYTYPE_BACK, true);
-            soundPlayed_ = true;
+            PlaySoundMem(noHitSound_, DX_PLAYTYPE_BACK, true);
+            isSoundPlayed_ = true;
         }
     }
 
@@ -103,7 +103,7 @@ void ExplosionAttack::Update(EnemyBoss& boss)
         StopEffekseer3DEffect(effectExploPlayId_); // エフェクトを停止
 
         reachedTargetPos_ = true;
-        soundPlayed_ = false;
+        isSoundPlayed_ = false;
         isFinished_ = true;
     }
 
@@ -146,8 +146,8 @@ void ExplosionAttack::UpdateEffect(void)
 
 void ExplosionAttack::InitSound(void)
 {
-	soundExplosion_ = ResourceManager::GetInstance().Load(
+    noHitSound_ = ResourceManager::GetInstance().Load(
 		ResourceManager::SRC::EXP_SE).handleId_;
 
-    ChangeVolumeSoundMem(SOUND_VALUE, soundExplosion_);
+    ChangeVolumeSoundMem(SOUND_VALUE, noHitSound_);
 }

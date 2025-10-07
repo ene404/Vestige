@@ -133,12 +133,15 @@ void Player::Init(void)
 
 	book_ = std::make_unique<Book>();
 	book_->Init();
+<<<<<<< HEAD
 
 	wristIndex_ = MV1SearchFrame(transform_.modelId, "mixamorig:RightHand");
 	handIndex_ = MV1SearchFrame(transform_.modelId, "mixamorig:RightHandMiddle1");
 	weaponTopIndex_ = WEAPON_TOP_INDEX;
 	weaponDownIndex_ = WEAPON_DOWN_INDEX;
 
+=======
+>>>>>>> a078689935038a8ebb941cf43f0f5f2488886679
 	weaponTopPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_);
 	weaponDownPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_);
 	weaponTopPos_ = WeaponTopPos(INIT_WEAPON_TOP_POS);

@@ -89,6 +89,9 @@ EnemyBoss::EnemyBoss(Player& player)
 	isDead_(false),
 	deadTimer_(0.0f),
 	stepCooldown_(0.0f),
+	hasUsedRoarBelow50Percent_(false),
+	hasUsedExplosionBelow50Percent_(false),
+	hasUsedSetupBelow40Percent_(false),
 	sHandle_(0),
 	isSound_(false)
 {
@@ -125,7 +128,6 @@ void EnemyBoss::Init(void)
 	attackFSM_ = std::make_shared<EnemyBossAttackStateMachine>();
 	InitAttackPattern();
 	
-
 	// エフェクトとサウンドの初期化
 	InitEffect();
 	InitSound();
@@ -608,7 +610,6 @@ void EnemyBoss::ChangeAttack(ATK_STATE newAttack)
 	if (attackFSM_)
 	{
 		attackFSM_->Change(*this, newAttack);
-
 	}
 }
 
@@ -1155,6 +1156,36 @@ bool EnemyBoss::IsPlayerInFront(float viewAngleDeg, float maxDistance)
 
 	// なす角度が視野角の範囲内か判定
 	return angleToPlayerRadians <= viewAngleRadians;
+}
+
+bool EnemyBoss::HasUsedRoarBelow50Percent(void)
+{
+	return hasUsedRoarBelow50Percent_;
+}
+
+void EnemyBoss::SetHasUsedRoarBelow50Percent(bool flag)
+{
+	hasUsedRoarBelow50Percent_ = flag;
+}
+
+bool EnemyBoss::HasUsedExplosionBelow50Percent(void)
+{
+	return hasUsedExplosionBelow50Percent_;
+}
+
+void EnemyBoss::SetHasUsedExplosionBelow50Percent(bool flag)
+{
+	hasUsedExplosionBelow50Percent_ = flag;
+}
+
+bool EnemyBoss::HasUsedSetupBelow40Percent(void)
+{
+	return hasUsedSetupBelow40Percent_;
+}
+
+void EnemyBoss::SetHasUsedSetupBelow40Percent(bool flag)
+{
+	hasUsedSetupBelow40Percent_ = flag;
 }
 
 void EnemyBoss::CollisionMist(void)

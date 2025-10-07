@@ -15,16 +15,8 @@ public:
 
 private:
 
-	// 死亡アニメーションが再生されたかどうか
-	bool deathAnimationStarted_;
-
-	// 死亡アニメーションが終了されたかどうか
-	bool deathAnimationFinishedReported_;
-
-	// 死亡ステートに入ってからの経過時間
-	float timer_;
-
-	// 死亡アニメーションの再生時間
-	float deathAnimationDuration_;
+	bool deathAnimationStarted_;			// 死亡アニメーションが再生されたかどうか
+	bool deathAnimationFinishedReported_;	// 死亡アニメーションが終了されたかどうか
+	float deathAnimationDuration_;			// 死亡アニメーションの再生時間
 };
 

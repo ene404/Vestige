@@ -243,14 +243,14 @@ void EventScene::DrawUI(void)
 
 void EventScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 {
-	VECTOR playerPos = GetPlayer()->GetTransform().pos;;
-	VECTOR enemyPos = GetEnemy()->GetTransform().pos;
+	VECTOR playerPos = player_->GetTransform().pos;;
+	VECTOR enemyPos = enemy_->GetTransform().pos;
 	VECTOR initialPlayerPos = { 0.0f,0.0f, 0.0f };
 
 	// イベントシーンに入った最初のフレームでのみ初期カメラ位置を設定
-	if (!isInitialized_ && GetState() == EventScene::STATE::START && IsStateEnterFrame()) 
+	if (!isInitialized_ && currentState_ == EventScene::STATE::START && IsStateEnterFrame())
 	{
-		initialPlayerPos = GetPlayer()->GetTransform().pos;
+		initialPlayerPos = player_->GetTransform().pos;
 		pos = VAdd(initialPlayerPos, EVENT_CAMERA_POS);
 		targetPos = VAdd(initialPlayerPos, EVENT_TARGET_POS);
 		isInitialized_ = true; // 初期化完了
@@ -260,13 +260,13 @@ void EventScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 	float radius = 0.0f;
 	float panAmount = 0.0f;
 	float t = 0.0f;
-	switch (GetState())
+	switch (currentState_)
 	{
 	case EventScene::STATE::START:
 		if (!isInitialized_) 
 		{
 			// プレイヤーの左前上方にカメラを配置
-			initialPlayerPos = GetPlayer()->GetTransform().pos;
+			initialPlayerPos = player_->GetTransform().pos;
 
 			// カメラの位置：プレイヤーの右後ろ上
 			pos = VAdd(initialPlayerPos, EVENT_START_CAMERA_POS);
@@ -279,27 +279,27 @@ void EventScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 		if (!isInitialized_) 
 		{
 			// プレイヤーの左前上方にカメラを配置
-			initialPlayerPos = GetPlayer()->GetTransform().pos;
+			initialPlayerPos = player_->GetTransform().pos;
 			// カメラの位置：プレイヤーの右後ろ上
 			pos = VAdd(playerPos, EVENT_STEP_CAMERA_POS);
 			isInitialized_ = true;
 		}
 
 		pos = VAdd(initialPlayerPos, EVENT_STEP_TARGET_POS); // 初期に固定
-		targetPos = GetPlayer()->GetTransform().pos;
+		targetPos = player_->GetTransform().pos;
 		break;
 
 	case EventScene::STATE::LOOK_AROUND:
 
 		// カメラが右上→左下、左上→右下にスイング
-		angle = sinf(GetStateTimer() * 1.0f);
+		angle = sinf(stateTimer_ * 1.0f);
 		pos = VAdd(playerPos, VGet(EVENT_LOOK_CAMER_POS_X * angle, EVENT_LOOK_CAMER_POS_Y, EVENT_LOOK_CAMER_POS_Z));
 		targetPos = VAdd(playerPos, EVENT_LOOK_TARGET_POS);
 		break;
 
 	case EventScene::STATE::CAMERA_PAN_TO_ENEMY:
 
-		t = std::clamp(GetStateTimer() / 2.0f, 0.0f, 1.0f);
+		t = std::clamp(stateTimer_ / 2.0f, 0.0f, 1.0f);
 
 		static VECTOR startPanPos;
 		static VECTOR endPanPos;
@@ -316,33 +316,13 @@ void EventScene::UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)
 	case EventScene::STATE::ENEMY_ROAR:
 		// 敵の足元 → 上方へ
 		pos = VAdd(enemyPos, VGet(EVENT_ROAR_CAMERA_POS_X,
-			EVENT_ROAR_CAMERA_POS_Y + GetStateTimer() * EVENT_ROAR_TIME_ADJUSTMOMENT, EVENT_ROAR_CAMERA_POS_Z));
+			EVENT_ROAR_CAMERA_POS_Y + stateTimer_ * EVENT_ROAR_TIME_ADJUSTMOMENT, EVENT_ROAR_CAMERA_POS_Z));
 		enemyPos = VAdd(enemyPos, EVENT_ROAR_ENEMY_POS);
 		targetPos = enemyPos;
 		break;
 	default:
 		break;
 	}
-}
-
-EventScene::STATE EventScene::GetState()
-{
-	return currentState_;
-}
-
-float EventScene::GetStateTimer()
-{
-	return stateTimer_;
-}
-
-std::shared_ptr<EventPlayer> EventScene::GetPlayer()
-{
-	return player_;
-}
-
-std::shared_ptr<EventEnemy> EventScene::GetEnemy()
-{
-	return enemy_;
 }
 
 bool EventScene::IsStateEnterFrame(void) const
