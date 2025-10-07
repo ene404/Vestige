@@ -28,6 +28,8 @@ public:
 	void DrawUI(void) override;
 	void UpdateCamera(VECTOR& pos, VECTOR& targetPos, VECTOR& cameraUp)override;
 
+	static constexpr int VISION_CONST_BUF_FLOAT4_SIZE = 2;		// 定数バッファの確保サイズ(視界)
+	static constexpr int LIGHTNING_CONST_BUF_FLOAT4_SIZE = 1;		// 定数バッファの確保サイズ(ライトニング)
 
 private:
 

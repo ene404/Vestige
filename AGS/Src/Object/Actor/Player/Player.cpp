@@ -71,12 +71,14 @@ Player::Player(void)
 	rollingSe_(resMng_.Load(ResourceManager::SRC::ROLLING_SE).handleId_),
 	ultSe_(resMng_.Load(ResourceManager::SRC::ULT_SE).handleId_),
 	damageSe_(resMng_.Load(ResourceManager::SRC::DAMAGE_SE).handleId_),
-	wristIndex_(MV1SearchFrame(transform_.modelId, "mixamorig:RightHand")),
-	handIndex_(MV1SearchFrame(transform_.modelId, "mixamorig:RightHandMiddle1")),
-	weaponTopIndex_(WEAPON_TOP_INDEX),
-	weaponDownIndex_(WEAPON_DOWN_INDEX),
-	weaponTopPos_(MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_)),
-	weaponDownPos_(MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_)),
+	wristIndex_(-1),
+	handIndex_(-1),
+	weaponTopIndex_(-1),
+	weaponDownIndex_(-1),
+	weaponTopPos_(AsoUtility::VECTOR_ZERO),
+	weaponDownPos_(AsoUtility::VECTOR_ZERO),
+	wristPos_(AsoUtility::VECTOR_ZERO),
+	handPos_(AsoUtility::VECTOR_ZERO),
 	effectHitPlayId_(-1),
 	effectHitResId_(-1),
 	effectUltPlayId_(-1),
@@ -132,6 +134,13 @@ void Player::Init(void)
 	book_ = std::make_unique<Book>();
 	book_->Init();
 
+	wristIndex_ = MV1SearchFrame(transform_.modelId, "mixamorig:RightHand");
+	handIndex_ = MV1SearchFrame(transform_.modelId, "mixamorig:RightHandMiddle1");
+	weaponTopIndex_ = WEAPON_TOP_INDEX;
+	weaponDownIndex_ = WEAPON_DOWN_INDEX;
+
+	weaponTopPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponTopIndex_);
+	weaponDownPos_ = MV1GetFramePosition(weapon_->GetModelHandle(), weaponDownIndex_);
 	weaponTopPos_ = WeaponTopPos(INIT_WEAPON_TOP_POS);
 
 	UpdateRightWeapon();
@@ -874,10 +883,10 @@ void Player::UpdateRightWeapon(void)
 {
 
 	// 手首 → 手 の向きベクトル
-	wristPos = MV1GetFramePosition(transform_.modelId, wristIndex_);
-	handPos = MV1GetFramePosition(transform_.modelId, handIndex_);
+	wristPos_ = MV1GetFramePosition(transform_.modelId, wristIndex_);
+	handPos_ = MV1GetFramePosition(transform_.modelId, handIndex_);
 
-	VECTOR dir = VSub(handPos, wristPos); // 向きベクトル
+	VECTOR dir = VSub(handPos_, wristPos_); // 向きベクトル
 	dir = VNorm(dir); // 正規化して単位ベクトルにする
 
 	// 向きから角度を算出
@@ -903,7 +912,7 @@ void Player::UpdateRightWeapon(void)
 	upVec = VNorm(upVec);
 
 	// オフセット合成
-	VECTOR offsetPos = handPos;
+	VECTOR offsetPos = handPos_;
 	offsetPos = VAdd(offsetPos, VScale(dir, forwardOffset));   // 前方
 	offsetPos = VAdd(offsetPos, VScale(upVec, upOffset));      // 上
 	offsetPos = VAdd(offsetPos, VScale(rightVec, rightOffset));// 右
@@ -1142,7 +1151,7 @@ void Player::UpdateWeaponCapsule()
 	upVec = VNorm(upVec);
 
 	// オフセット合成
-	VECTOR offsetPos = handPos;
+	VECTOR offsetPos = handPos_;
 	offsetPos = VAdd(offsetPos, VScale(dir, FORWARD_OFFSET));   // 前方
 	offsetPos = VAdd(offsetPos, VScale(upVec, UP_OFFSET));      // 上
 	offsetPos = VAdd(offsetPos, VScale(rightVec, RIGHT_OFFSET));// 右
