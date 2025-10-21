@@ -111,8 +111,8 @@ void TitleScene::Update(void)
 		SetFontSize(FONT_SIZE_CONFIRM);
 		const char* options[CONFIRM_OPTION_COUNT] = { "‚Í‚¢", "‚¢‚¢‚¦" };
 		int optionWidths[CONFIRM_OPTION_COUNT] = {
-			static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
-			static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
+			GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
+			GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
 		};
 		int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 		int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -159,8 +159,8 @@ void TitleScene::Update(void)
 				SetFontSize(FONT_SIZE_CONFIRM);
 				const char* options[MENU_ITEM_COUNT] = { "‚Í‚¢", "‚¢‚¢‚¦" };
 				int optionWidths[MENU_ITEM_COUNT] = {
-					static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
-					static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
+					GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
+					GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
 				};
 				int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 				int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -184,7 +184,7 @@ void TitleScene::Update(void)
 		SetFontSize(FONT_SIZE_MENU);
 		for (int i = 0; i < MENU_ITEM_COUNT; ++i) {
 			const char* text = menuItems_[i];
-			int textWidth = static_cast<int>(GetDrawStringWidth(text, strlen(text)));
+			int textWidth = GetDrawStringWidth(text, static_cast<int>(strlen(text)));
 
 			int x = (Application::SCREEN_SIZE_X - textWidth) / 2;
 			int y = MENU_BASE_Y + i * MENU_ITEM_INTERVAL;
@@ -206,8 +206,8 @@ void TitleScene::Update(void)
 						SetFontSize(FONT_SIZE_CONFIRM);
 						const char* options[MENU_ITEM_COUNT] = { "‚Í‚¢", "‚¢‚¢‚¦" };
 						int optionWidths[MENU_ITEM_COUNT] = {
-							static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
-							static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
+							GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
+							GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
 						};
 						int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
 						int startX = (Application::SCREEN_SIZE_X - totalWidth) / 2;
@@ -259,15 +259,15 @@ void TitleScene::Draw(void)
 		const char* options[CONFIRM_OPTION_COUNT] = { "‚Í‚¢", "‚¢‚¢‚¦" };
 
 		SetFontSize(FONT_SIZE_CONFIRM);
-		int qWidth = static_cast<int>(GetDrawStringWidth(question, strlen(question)));
+		int qWidth = GetDrawStringWidth(question, static_cast<int>(strlen(question)));
 		int qX = (Application::SCREEN_SIZE_X - qWidth) / 2;
 
 		DrawString(qX + SHADOW_OFFSET, CONFIRM_QUESTION_Y + SHADOW_OFFSET, question, GetColor(COLOR_TEXT_SHADOW_R, COLOR_TEXT_SHADOW_G, COLOR_TEXT_SHADOW_B));
 		DrawString(qX, CONFIRM_QUESTION_Y, question, GetColor(COLOR_TEXT_MAIN_R, COLOR_TEXT_MAIN_G, COLOR_TEXT_MAIN_B));
 
 		int optionWidths[CONFIRM_OPTION_COUNT] = {
-			static_cast<int>(GetDrawStringWidth(options[0], strlen(options[0]))),
-			static_cast<int>(GetDrawStringWidth(options[1], strlen(options[1])))
+			GetDrawStringWidth(options[0], static_cast<int>(strlen(options[0]))),
+			GetDrawStringWidth(options[1], static_cast<int>(strlen(options[1])))
 		};
 
 		int totalWidth = optionWidths[0] + optionWidths[1] + OPTION_PADDING;
@@ -303,7 +303,7 @@ void TitleScene::Draw(void)
 	for (int i = 0; i < MENU_ITEM_COUNT; ++i)
 	{
 		const char* text = menuItems_[i];
-		int textWidth = static_cast<int>(GetDrawStringWidth(text, strlen(text)));
+		int textWidth = GetDrawStringWidth(text, static_cast<int>(strlen(text)));
 		int x = (Application::SCREEN_SIZE_X - textWidth) / 2;
 		int y = MENU_BASE_Y + i * MENU_ITEM_INTERVAL;
 

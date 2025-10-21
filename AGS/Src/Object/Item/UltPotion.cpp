@@ -50,7 +50,7 @@ void UltPotion::Draw(void)
     // u•KE–òv‚Ìƒ‰ƒxƒ‹‚Æ”wŒi
     SetFontSize(18);
     const char* label = "•KE–ò";
-    int textWidth = static_cast<int>(GetDrawStringWidth(label, strlen(label)));
+    int textWidth = GetDrawStringWidth(label, static_cast<int>(strlen(label)));
     int textX = 100 - textWidth / 2;
     int textY = 590;
     int paddingX = 10;

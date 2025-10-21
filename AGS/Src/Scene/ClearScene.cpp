@@ -68,7 +68,7 @@ void ClearScene::Draw(void)
 	// ƒqƒ“ƒg•\¦iEnter‚Å–ß‚éj
 	SetFontSize(HINT_FONT_SIZE);
 	const char* hint = "Press Enter or A Button";
-	int hintWidth = static_cast<int>(GetDrawStringWidth(hint, strlen(hint)));
+	int hintWidth = GetDrawStringWidth(hint, static_cast<int>(strlen(hint)));
 	int hintX = (Application::SCREEN_SIZE_X - hintWidth) / 2;
 
 	// ”¼“§–¾‚Ì•”wŒi
