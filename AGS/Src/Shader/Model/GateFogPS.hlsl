@@ -23,7 +23,7 @@ float4 main(PS_INPUT PSInput) : SV_TARGET
 	PSInput.uv.y -= g_time * g_scroll_speed;
 
 	// ŒJ‚è•Ô‚µ
-	PSInput.uv.y = frac(PSInput.uv.y);
+	//PSInput.uv.y = frac(PSInput.uv.y);
 
 	float4 color;
 

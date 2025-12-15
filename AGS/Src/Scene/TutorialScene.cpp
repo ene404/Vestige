@@ -254,8 +254,8 @@ void TutorialScene::Draw(void)
 
 	enemyScarecrow_->Draw();
 
-	player_->Draw();
-	SceneManager::GetInstance().GetCamera()->DrawLockonMarker();
+	/*player_->Draw();
+	SceneManager::GetInstance().GetCamera()->DrawLockonMarker();*/
 
 	int mainScreen = SceneManager::GetInstance().GetMainScreen();
 
