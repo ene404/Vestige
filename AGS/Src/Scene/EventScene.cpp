@@ -214,33 +214,33 @@ void EventScene::Draw(void)
 	skyDome_->Draw();
 	mist_->Draw();
 	stage_->Draw();
-	//enemy_->Draw();
+	enemy_->Draw();
 
-	//if (currentState_ != STATE::CAMERA_PAN_TO_ENEMY)
-	//{
-	//	player_->Draw();
-	//}
+	if (currentState_ != STATE::CAMERA_PAN_TO_ENEMY)
+	{
+		player_->Draw();
+	}
 
-	//// プログレスバーの描画
-	//// キーが押されていなくてもプログレスバーの描画関数を呼び出す
-	//int elapsedTime = isLongPressing ? (GetNowCount() - longPressStartTime_) : 0;
-	//DrawProgressBar(elapsedTime, LONG_PRESS_DURATION_MS);
+	// プログレスバーの描画
+	// キーが押されていなくてもプログレスバーの描画関数を呼び出す
+	int elapsedTime = isLongPressing ? (GetNowCount() - longPressStartTime_) : 0;
+	DrawProgressBar(elapsedTime, LONG_PRESS_DURATION_MS);
 
-	//// ボタンメッセージの描画
-	//const char* buttonMessage = "Press Enter or A";
+	// ボタンメッセージの描画
+	const char* buttonMessage = "Press Enter or A";
 
-	//// カスタムフォントで描画した際のメッセージの幅と高さを取得します
-	//int msgWidth = GetDrawStringWidthToHandle(buttonMessage, static_cast<int>(strlen(buttonMessage)), customFontHandle_);
-	//int msgHeight = GetFontSizeToHandle(customFontHandle_);
+	// カスタムフォントで描画した際のメッセージの幅と高さを取得します
+	int msgWidth = GetDrawStringWidthToHandle(buttonMessage, static_cast<int>(strlen(buttonMessage)), customFontHandle_);
+	int msgHeight = GetFontSizeToHandle(customFontHandle_);
 
-	//// 右下揃えのためのX座標を計算します:
-	//// 画面の幅 - メッセージの幅 - 右からの余白
-	//int msgX = Application::SCREEN_SIZE_X - msgWidth - FONT_MARGIN_RIGHT;
+	// 右下揃えのためのX座標を計算します:
+	// 画面の幅 - メッセージの幅 - 右からの余白
+	int msgX = Application::SCREEN_SIZE_X - msgWidth - FONT_MARGIN_RIGHT;
 
-	//// 右下揃えのためのY座標を計算します:
-	//// 画面の高さ - メッセージの高さ - 下からの余白
-	//int msgY = Application::SCREEN_SIZE_Y - FONT_MARGIN_UNDER;
-	//DrawStringToHandle(msgX, msgY, buttonMessage, GetColor(FONT_MAX_COL, FONT_MAX_COL, FONT_MAX_COL), customFontHandle_);
+	// 右下揃えのためのY座標を計算します:
+	// 画面の高さ - メッセージの高さ - 下からの余白
+	int msgY = Application::SCREEN_SIZE_Y - FONT_MARGIN_UNDER;
+	DrawStringToHandle(msgX, msgY, buttonMessage, GetColor(FONT_MAX_COL, FONT_MAX_COL, FONT_MAX_COL), customFontHandle_);
 }
 
 void EventScene::DrawUI(void)
