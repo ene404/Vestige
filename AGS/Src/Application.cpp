@@ -33,7 +33,6 @@ Application& Application::GetInstance(void)
 
 void Application::Init(void)
 {
-
 	// アプリケーションの初期設定
 	SetWindowText("Vestige");
 

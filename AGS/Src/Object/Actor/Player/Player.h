@@ -400,7 +400,7 @@ private:
 	VECTOR wristPos_;					// 手首座標
 
 	int handIndex_;						// 手のフレーム
-	VECTOR handPos_;						// 手座標
+	VECTOR handPos_;					// 手座標
 
 
 	int weaponTopIndex_;				// 武器のトップ
@@ -436,7 +436,7 @@ private:
 	void ChangeStateNone(void);			// 状態をNoneに変更
 	void ChangeStatePlay(void);			// 状態をPlayに変更
 
-	void ChangeItem(ITEM_TYPE itemType);	// アイテム変更
+	void ChangeItem(ITEM_TYPE itemType);// アイテム変更
 
 	void UpdateNone(void);				// None状態更新
 	void UpdatePlay(void);				// Play状態更新

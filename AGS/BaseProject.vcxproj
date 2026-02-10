@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Object\Actor\CharactorBase.cpp" />
     <ClCompile Include="Src\Object\Actor\Enemy\EnemyBoss\Animation\EnemyBossAnimation.cpp" />
     <ClCompile Include="Src\Object\Actor\Enemy\EnemyBoss\EnemyBoss.cpp" />
     <ClCompile Include="Src\Object\Actor\Enemy\EnemyBoss\EnemyBossDummy.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="Src\Renderer\VertexMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Object\Actor\CharactorBase.h" />
     <ClInclude Include="Src\Object\Actor\Enemy\EnemyBoss\Animation\EnemyBossAnimation.h" />
     <ClInclude Include="Src\Object\Actor\Enemy\EnemyBoss\EnemyBoss.h" />
     <ClInclude Include="Src\Object\Actor\Enemy\EnemyBoss\EnemyBossDummy.h" />
